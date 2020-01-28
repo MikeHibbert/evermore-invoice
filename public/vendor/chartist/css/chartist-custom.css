@@ -1,0 +1,140 @@
+.ct-slice-pie {
+	stroke-width: 2px;
+}
+.chartist {
+	position: relative;
+}
+.ct-label {
+	font-size: 12px; 
+}
+.ct-grid {
+	stroke: #dce4ee;
+	stroke-width: 1px;
+	stroke-dasharray: 2px;
+}
+.ct-point {
+	stroke-width: 8px;
+	stroke-linecap: round;
+}
+.ct-line {
+	fill: none;
+	stroke-width: 2px;
+}
+.ct-area {
+	stroke: none;
+	fill-opacity: 1;
+}
+.ct-bar {
+	fill: none;
+	stroke-width: 8px;
+}
+.ct-slice-donut {
+	fill: none;
+	stroke-width: 60px;
+}
+
+
+/* Tooltip */
+.chartist-tooltip {
+	position: absolute;
+	display: block;
+	min-width: 90px;
+	padding: 15px;
+	opacity: 0;
+	background: #4d4d4d;
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 700;
+	text-align: center;
+	pointer-events: none;
+	z-index: 1000;
+	-webkit-transition: opacity .2s linear;
+	-moz-transition: opacity .2s linear;
+	-o-transition: opacity .2s linear;
+	transition: opacity .2s linear
+}
+.chartist-tooltip:before {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	margin-left: -15px;
+	border: 15px solid transparent;
+	border-top-color: #4d4d4d;
+}
+.chartist-tooltip.tooltip-show {
+	opacity: 1
+}
+
+
+/**************** Custom Bar Line Donut ****************/
+.custom-one .ct-series-a .ct-bar,
+.custom-one .ct-series-a .ct-line,
+.custom-one .ct-series-a .ct-point,
+.custom-one .ct-series-a .ct-slice-donut {
+	stroke: #1a96e5;
+}
+.custom-one .ct-series-b .ct-bar,
+.custom-one .ct-series-b .ct-line,
+.custom-one .ct-series-b .ct-point,
+.custom-one .ct-series-b .ct-slice-donut {
+	stroke: #94ccf3;
+}
+.custom-one .ct-series-c .ct-bar,
+.custom-one .ct-series-c .ct-line,
+.custom-one .ct-series-c .ct-point,
+.custom-one .ct-series-c .ct-slice-donut {
+	stroke: #ffd2d2;
+}
+
+
+
+/**************** Custom Red Bar Line Donut ****************/
+.custom-red .ct-series-a .ct-bar,
+.custom-red .ct-series-a .ct-line,
+.custom-red .ct-series-a .ct-point {
+	stroke: #f23f3f;
+}
+
+
+/**************** Custom Red Bar Line Donut ****************/
+.custom-green .ct-series-a .ct-bar,
+.custom-green .ct-series-a .ct-line,
+.custom-green .ct-series-a .ct-point {
+	stroke: #27b963;
+}
+
+
+
+
+
+
+
+/**************** Custom Area ****************/
+.custom-area-blue .ct-series-a .ct-line,
+.custom-area-blue .ct-series-a .ct-point {
+	stroke: #1a96e5;
+}
+.custom-area-blue .ct-series-a .ct-area {
+	fill: rgba(236, 247, 255, 0.6);
+}
+
+
+.custom-area-green .ct-series-a .ct-line,
+.custom-area-green .ct-series-a .ct-point {
+	stroke: #18ba5f;
+}
+.custom-area-green .ct-series-a .ct-area {
+	fill: rgba(24, 186, 95, 0.06);
+}
+
+
+.custom-area-red .ct-series-a .ct-line,
+.custom-area-red .ct-series-a .ct-point {
+	stroke: #f53d38;
+}
+.custom-area-red .ct-series-a .ct-area {
+	fill: rgba(245, 61, 56, 0.06);
+}

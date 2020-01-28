@@ -1,0 +1,30 @@
+// Displaying X Labels Diagonally (Bar Chart)
+var day_data = [
+	{"period": "Jan", "Delivered": 1, "Ordered": 2, "Reporeted": 3, "Arrived": 4},
+	{"period": "Feb", "Delivered": 5, "Ordered": 4, "Reporeted": 3, "Arrived": 2},
+	{"period": "Mar", "Delivered": 7, "Ordered": 8, "Reporeted": 9, "Arrived": 10},
+	{"period": "Apr", "Delivered": 12, "Ordered": 11, "Reporeted": 10, "Arrived": 9},
+	{"period": "May", "Delivered": 15, "Ordered": 16, "Reporeted": 17, "Arrived": 18},
+	{"period": "Jun", "Delivered": 20, "Ordered": 19, "Reporeted": 18, "Arrived": 17},
+	{"period": "Jul", "Delivered": 10, "Ordered": 9, "Reporeted": 8, "Arrived": 7},
+	{"period": "Aug", "Delivered": 7, "Ordered": 8, "Reporeted": 9, "Arrived": 10},
+	{"period": "Sep", "Delivered": 12, "Ordered": 11, "Reporeted": 10, "Arrived": 9},
+	{"period": "Oct", "Delivered": 10, "Ordered": 11, "Reporeted": 12, "Arrived": 13},
+	{"period": "Nov", "Delivered": 15, "Ordered": 14, "Reporeted": 13, "Arrived": 12},
+	{"period": "Dec", "Delivered": 6, "Ordered": 7, "Reporeted": 8, "Arrived": 9},
+];
+Morris.Bar({
+	element: 'xLabelsDiagBar',
+	data: day_data,
+	xkey: 'period',
+	ykeys: ['Delivered', 'Ordered', 'Reporeted', 'Arrived'],
+	labels: ['Delivered', 'Ordered', 'Reporeted', 'Arrived' ],
+	xLabelAngle: 45,
+	gridLineColor: "#2999f5",
+	resize: true,
+	gridTextColor: 'rgba(255, 255, 255, 0.7)',
+	gridTextSize: '12',
+	hideHover: "auto",
+	resize: true,
+	barColors:['#04fcff', '#d8ff79', '#adff2f', '#ffef33'],
+});
