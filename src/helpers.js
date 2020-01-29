@@ -17,11 +17,12 @@ const encryptData = (data) => {
 }
 
 const decryptData = (encrypted_data) => {
-  
+
 }
 
-export const sendInvoice = () => {
-  sendgrid.setApiKey("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");
+export const sendInvoice = (api_key) => {
+  // "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"
+  sendgrid.setApiKey(api_key);
 
   const msg = {
     to: 'hibbert.michael@gmail.com',
