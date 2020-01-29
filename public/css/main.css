@@ -657,8 +657,8 @@ a.logo {
   float: left;
   min-width: 180px; }
   a.logo img {
-    max-width: 140px;
-    max-height: 35px; }
+    height: 20px;
+    margin-top: 2px; }
 
 @media (max-width: 767px) {
   .logo-block {
@@ -768,7 +768,7 @@ a.logo {
             line-height: 40px; }
         .header-actions > li > a.user-settings span.user-name {
           color: #ffffff;
-          margin: 12px 0 0 10px;
+          margin: 5px 0 0 10px;
           vertical-align: middle;
           font-size: .75rem;
           float: left;
@@ -5627,4 +5627,27 @@ label {
     font-size: inherit;
     color: #8796af; }
 
+.logo-large {
+  margin: 50px 0 40px 0;
+}
+
+.white {
+  color: #ffffff;
+}
+
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}
+
+.margin-bottom-300 {
+  margin-bottom: 300px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.bordered {
+  background-color: #2698e2;
+}
 /*# sourceMappingURL=main.css.map */
