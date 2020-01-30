@@ -12,6 +12,7 @@ import Logout from './components/auth/Logout';
 import Dashboard from './containers/dashboard/Dashboard';
 import Invoices from './containers/invoices/Invoices';
 import Settings from './containers/settings/Settings';
+import Reports from './containers/reports/Reports';
 
 class App extends Component {
   state = {
@@ -130,15 +131,23 @@ class App extends Component {
 
     let routes = [
       <Route key='dashboard' path="/" exact component={() => <Dashboard wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
-      <Route key='invoices' path="/invoices" exact component={() => <Invoices wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
+      <Route key='invoices' path="/invoices" exact component={() => <Invoices 
+                                                                      wallet_address={this.state.wallet_address} 
+                                                                      jwk={this.state.jwk} 
+                                                                      addSuccessAlert={this.addSuccessAlert} 
+                                                                      addErrorAlert={this.addErrorAlert}
+                                                                      />} />,
+      <Route key='reports' path="/reports" exact component={() => <Reports wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
       // <Route key='charts' path="/charts" exact component={() => <ChartingPage 
       //                                                               addErrorAlert={this.addErrorAlert} 
       //                                                               addSuccessAlert={this.addSuccessAlert} 
       //                                                               wallet_address={this.state.wallet_address} 
       //                                                               {...this.props}
       //                                                               jwk={this.state.jwk} />} />,
-      <Route key='settings' path="/settings" exact component={() => <Settings wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
-      <Route key='logout' path="/logout" exact component={() => <Logout onLogout={this.disconnectWallet.bind(this)} addSuccessAlert={this.addSuccessAlert} explandContentArea={() => this.explandContentArea} />} />
+      <Route key='settings' path="/settings" exact component={() => <Settings wallet_address={this.state.wallet_address} jwk={this.state.jwk} 
+                                                                        addSuccessAlert={this.addSuccessAlert} />} />,
+      <Route key='logout' path="/logout" exact component={() => <Logout onLogout={this.disconnectWallet.bind(this)} addSuccessAlert={this.addSuccessAlert}
+                                                                     explandContentArea={() => this.explandContentArea} />} />
     ];
 
     if(!this.state.isAuthenticated) {

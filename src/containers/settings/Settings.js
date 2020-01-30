@@ -34,6 +34,8 @@ class Settings extends Component {
         localStorage.setItem('evermore-invoice-sendgrid-api-key', this.state.api_key);
         localStorage.setItem('evermore-invoice-sendgrid-email-from', this.state.email_from);
         localStorage.setItem('evermore-invoice-sendgrid-currency-symbol', this.state.currency_symbol);
+
+        this.props.addSuccessAlert("You settings have been saved locally.");
     }
 
     OnChange(event) {
@@ -44,8 +46,6 @@ class Settings extends Component {
         state[event.target.name] = value;
 
         this.setState(state);
-
-        console.log(value);
     }
 
     render() {
@@ -85,7 +85,7 @@ class Settings extends Component {
                                                     </div>
                                                     <div className="form-group">
                                                         <input type="email" className="form-control" 
-                                                            id="email_from" name="email_from" placeholder="From Email Address" 
+                                                            id="email_from" name="email_from" placeholder="Email Address to send from" 
                                                             required="" value={this.state.email_from} 
                                                             onChange={(e) => {this.OnChange(e)}}
                                                             />
@@ -103,7 +103,9 @@ class Settings extends Component {
                                                             onChange={(e) => {this.OnChange(e)}}
                                                             />
                                                     </div>  
-                                                    <button type="button" id="submit" onClick={this.OnSave.bind(this)} name="submit" className="btn btn-primary pull-right">Submit Form</button>                   
+                                                    <button type="button" id="submit" 
+                                                        onClick={this.OnSave.bind(this)} name="submit" 
+                                                        className="btn btn-primary pull-right">Update settings</button>                   
                                                 </div>
                                                 
                                             </div>

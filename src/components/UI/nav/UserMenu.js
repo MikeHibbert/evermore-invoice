@@ -43,11 +43,11 @@ class UserMenu extends Component {
                     </a>
                     <div className={this.state.panelClasses} aria-labelledby="userSettings">
                         <div className="admin-settings">
-                            <ul class="admin-settings-list">
+                            <ul className="admin-settings-list">
                                 <li>
                                     <a href="">
-                                        <span class="icon icon-wallet"></span>
-                                        <span class="text-name">{this.props.current_balance} AR</span>
+                                        <span className="icon icon-wallet"></span>
+                                        <span className="text-name">{this.props.current_balance} AR</span>
                                     </a>
                                 </li>
                             </ul>
