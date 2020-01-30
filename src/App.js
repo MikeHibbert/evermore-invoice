@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import Dashboard from './containers/dashboard/Dashboard';
+import Invoices from './containers/invoices/Invoices';
 import Settings from './containers/settings/Settings';
 
 class App extends Component {
@@ -129,6 +130,7 @@ class App extends Component {
 
     let routes = [
       <Route key='dashboard' path="/" exact component={() => <Dashboard wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
+      <Route key='invoices' path="/invoices" exact component={() => <Invoices wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
       // <Route key='charts' path="/charts" exact component={() => <ChartingPage 
       //                                                               addErrorAlert={this.addErrorAlert} 
       //                                                               addSuccessAlert={this.addSuccessAlert} 
@@ -159,7 +161,7 @@ class App extends Component {
     let footer = null;
 
     if(this.state.isAuthenticated) {
-      mainnav = <MainNav />;
+      mainnav = <MainNav location={this.props.location}/>;
 
       header = (
         <header className="app-header">

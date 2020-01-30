@@ -10,7 +10,6 @@ class UserMenu extends Component {
     }
 
     componentDidMount() {
-        debugger;
         const name = localStorage.getItem('evermore-invoice-name', null);
 
         if(name) {

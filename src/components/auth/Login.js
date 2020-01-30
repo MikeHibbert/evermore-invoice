@@ -34,7 +34,12 @@ class Auth extends Component {
 
   render() {
 
-    let form = <input type="file" name="keyfile" className="btn btn-default margin-top-10 bordered" onChange={(e) => this.onChange(e)} />;
+    let form = (<div class="col-xl-4 col-lg col-md-4 col-sm-4 col-12 margin-auto margin-top-20">
+                  <div class="custom-file">
+                    <input type="file" name="keyfile" className="custom-file-input" onChange={(e) => this.onChange(e)} />
+                    <label class="custom-file-label custom-file-label-primary" for="customFile2">Choose file</label>
+                  </div>
+                </div>);
 
     if(this.props.loading) {
       form = <span>Loading your wallet ...</span>
@@ -60,7 +65,7 @@ class Auth extends Component {
 
             <footer>
               <div className="forgot-password pull-left">
-                  <a href="https://tokens.arweave.org/" className="white" target="_blank">Need some FREE AR tokens? Click Here!</a>
+                  <a href="https://tokens.arweave.org/" className="white btn btn-info" target="_blank">Dont have a wallet? or need some FREE AR coins? Click Here!</a>
               </div>
             </footer>
           </form>
