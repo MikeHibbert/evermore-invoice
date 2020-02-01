@@ -11,13 +11,20 @@ import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import Dashboard from './containers/dashboard/Dashboard';
 import Invoices from './containers/invoices/Invoices';
+import Clients from './containers/clients/Clients';
+import ClientEdit from './containers/clients/ClientEdit';
 import Settings from './containers/settings/Settings';
 import Reports from './containers/reports/Reports';
+import { getClients, getInvoices } from './helpers';
+
 
 class App extends Component {
   state = {
     isAuthenticated: null,
-    balance: 0
+    balance: 0,
+    currency_symbol: '$',
+    loading: "",
+    clients: []
   }
 
   constructor(props) {
@@ -38,9 +45,19 @@ class App extends Component {
       this.loadWallet(wallet_address);
     }
 
-    const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' ? true : false;
 
-    this.setState({isAuthenticated: isAuthenticated === 'true' ? true : false});
+    this.setState({isAuthenticated: isAuthenticated });
+
+    const currency_symbol = localStorage.getItem('evermore-invoice-sendgrid-currency-symbol', null);
+
+    if(currency_symbol) {
+      this.setState({currency_symbol: currency_symbol});
+    }
+
+    if(isAuthenticated) {
+      this.getUserData();
+    }    
   }
 
   componentDidUpdate(prevProps) {
@@ -51,6 +68,19 @@ class App extends Component {
         this.setState({contentStyle: {marginLeft: '0px'}});
       }
     }
+  }
+
+  getUserData() {
+    const that = this;
+    const clients = getClients(this.state.wallet_address).then((clients) => {
+      that.setState({clients: clients});
+      
+      const invoices = getInvoices(this.state.wallet_address).then((invoices) => {
+        that.setState({invoices: invoices});
+  
+        this.setLoaded();
+      });
+    });    
   }
 
   toggleContent() {
@@ -125,25 +155,48 @@ class App extends Component {
     toast(message, { type: toast.TYPE.ERROR });  
   }
 
+  setLoading() {
+    this.setState({loading:""});
+  }
+
+  setLoaded() {
+    this.setState({loading:"loaded"});
+  }
+
   render() {
 
     let header = null;
 
     let routes = [
-      <Route key='dashboard' path="/" exact component={() => <Dashboard wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
+      <Route key='dashboard' path="/" exact component={() => <Dashboard 
+        currency_symbol={this.state.currency_symbol} 
+        wallet_address={this.state.wallet_address} 
+        jwk={this.state.jwk} 
+      />} />,
       <Route key='invoices' path="/invoices" exact component={() => <Invoices 
-                                                                      wallet_address={this.state.wallet_address} 
-                                                                      jwk={this.state.jwk} 
-                                                                      addSuccessAlert={this.addSuccessAlert} 
-                                                                      addErrorAlert={this.addErrorAlert}
-                                                                      />} />,
-      <Route key='reports' path="/reports" exact component={() => <Reports wallet_address={this.state.wallet_address} jwk={this.state.jwk} />} />,
-      // <Route key='charts' path="/charts" exact component={() => <ChartingPage 
-      //                                                               addErrorAlert={this.addErrorAlert} 
-      //                                                               addSuccessAlert={this.addSuccessAlert} 
-      //                                                               wallet_address={this.state.wallet_address} 
-      //                                                               {...this.props}
-      //                                                               jwk={this.state.jwk} />} />,
+        currency_symbol={this.state.currency_symbol}
+        wallet_address={this.state.wallet_address} 
+        jwk={this.state.jwk} 
+      />} />,
+      <Route key='clients' path="/clients" exact component={() => <Clients 
+        clients={this.state.clients}
+        wallet_address={this.state.wallet_address} 
+        jwk={this.state.jwk} 
+        currency_symbol={this.state.currency_symbol}
+      />} />,
+      <Route key='client-edit' exact path="/client/edit/:txid" exact render={props => <ClientEdit 
+        {...props}
+        clients={this.state.clients}
+        wallet_address={this.state.wallet_address} 
+        
+        jwk={this.state.jwk} 
+        currency_symbol={this.state.currency_symbol}
+      />} />,
+      <Route key='reports' path="/reports" exact component={() => <Reports 
+        wallet_address={this.state.wallet_address} 
+        jwk={this.state.jwk} 
+        currency_symbol={this.state.currency_symbol}
+      />} />,
       <Route key='settings' path="/settings" exact component={() => <Settings wallet_address={this.state.wallet_address} jwk={this.state.jwk} 
                                                                         addSuccessAlert={this.addSuccessAlert} />} />,
       <Route key='logout' path="/logout" exact component={() => <Logout onLogout={this.disconnectWallet.bind(this)} addSuccessAlert={this.addSuccessAlert}
@@ -168,6 +221,8 @@ class App extends Component {
 
     let mainnav = null;
     let footer = null;
+
+    const year = new Date().getFullYear();
 
     if(this.state.isAuthenticated) {
       mainnav = <MainNav location={this.props.location}/>;
@@ -202,7 +257,7 @@ class App extends Component {
           </header>
       );
 
-      footer = (<footer className="main-footer">© Evermore Invoice 2020</footer>);
+    footer = (<footer className="main-footer">© Evermore Invoice {year}</footer>);
     }
     
     return (
@@ -210,7 +265,7 @@ class App extends Component {
 
       <div className="App">
         <ToastContainer />
-        <div id="loading-wrapper" style={{display: 'none'}}>
+        <div id="loading-wrapper" className={this.state.loading}>
           <div id="loader"></div>
         </div>
           

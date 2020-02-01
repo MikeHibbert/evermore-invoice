@@ -51,6 +51,17 @@ class Settings extends Component {
     render() {
         return (
             <>
+            <header className="page-header">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <div className="page-title">
+                      <h3>&nbsp;</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </header>
             <div className="main-content" style={{minHeight: "320px"}}>
                 <div className="row gutters">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -58,6 +69,8 @@ class Settings extends Component {
                             <div className="card-body">
                                 <div className="row justify-content-center gutters">
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <p><span className="icon-info2"></span> All settings are save locally in your browser and will <strong>NOT</strong> be stored in the blockchain. 
+                                            Only Invoices and Client information are encrypted and stored, and only someone with your wallet credentials can access them.</p>
                                         <form>
                                             <div className="form-block">
                                                 <div className="form-block-header">

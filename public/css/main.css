@@ -5315,7 +5315,8 @@ label {
 /*************** 18. Tables ***************/
 .table {
   font-size: .85rem;
-  color: #737373; }
+  color: #737373; 
+  text-align: left;}
 
 .table-dark {
   color: #a6a6a6; }
@@ -5657,5 +5658,9 @@ label {
 
 .margin-auto {
   margin: 0 auto 0 auto;
+}
+
+.loaded {
+  display: none;
 }
 /*# sourceMappingURL=main.css.map */

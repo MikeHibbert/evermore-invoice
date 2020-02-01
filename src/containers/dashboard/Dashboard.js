@@ -21,7 +21,7 @@ class Dashboard extends Component {
                 <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="page-title">
-                      <h3>Dashboard</h3>
+                      <h3>&nbsp;</h3>
                     </div>
                   </div>
                 </div>
