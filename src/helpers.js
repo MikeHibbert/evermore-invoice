@@ -165,7 +165,7 @@ export const getInvoices = async (wallet_address, clients) => {
   // }));
 
   const invoices = [];
-  for(let i = 0; i< 20; i++) {
+  for(let i = 0; i < 20; i++) {
     invoices.push({
       txid: faker.random.uuid(),
       client: clients[faker.random.number(0, clients.length)],
@@ -176,10 +176,12 @@ export const getInvoices = async (wallet_address, clients) => {
         }
       ],
       due_date: faker.date.future(),
+      create_at: new Date(),
       total_value: faker.random.number(2000, 10000),
       notes: faker.lorem.text(200),
       tax_rate: faker.random.number(0, 20),
-      tax_code: faker.random.number()
+      tax_code: faker.random.number(),
+      status: faker.random.arrayElement(['Pending', 'Sent', 'Overdue'])
     })
   }
 

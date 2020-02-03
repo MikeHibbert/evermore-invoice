@@ -50,7 +50,7 @@ class App extends Component {
 
     this.setState({isAuthenticated: isAuthenticated });
 
-    const currency_symbol = localStorage.getItem('evermore-invoice-sendgrid-currency-symbol', null);
+    const currency_symbol = localStorage.getItem('evermore-invoice-currency-symbol', null);
 
     if(currency_symbol) {
       this.setState({currency_symbol: currency_symbol});
