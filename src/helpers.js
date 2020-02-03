@@ -143,7 +143,7 @@ export const updateInvoice = async (invoice) => {
   console.log(invoice);
 }
 
-export const getInvoices = async (wallet_address) => {
+export const getInvoices = async (wallet_address, clients) => {
   const arql = {
         op: "and",
         expr1: {
@@ -168,14 +168,18 @@ export const getInvoices = async (wallet_address) => {
   for(let i = 0; i< 20; i++) {
     invoices.push({
       txid: faker.random.uuid(),
-      client_id: faker.random.uuid(),
-      contact_name: faker.name.firstName() + " " + faker.name.lastName(),
-      address: faker.fake("{{address.streetAddress}}, {{address.zipCode}}"),
-      email: faker.internet.email(),
-      phone: faker.phone.phoneNumber(),
-      website: faker.internet.domainName(),
-      outstanding_invoices: [],
-      paid_invoices: []
+      client: clients[faker.random.number(0, clients.length)],
+      items: [{
+          name: faker.name.jobType(),
+          rate: faker.random.number(200, 1000),
+          unit_of_work: faker.random.arrayElement(['per hour', 'per day', 'per unit'])
+        }
+      ],
+      due_date: faker.date.future(),
+      total_value: faker.random.number(2000, 10000),
+      notes: faker.lorem.text(200),
+      tax_rate: faker.random.number(0, 20),
+      tax_code: faker.random.number()
     })
   }
 

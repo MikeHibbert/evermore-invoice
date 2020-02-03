@@ -108,6 +108,7 @@ class Clients extends Component {
                             activeClass='active'
                             activeLinkClass=''
                           />
+                          <Link to="/client/new" className="btn btn-success margin-top-20">Create New Client</Link>
                         </div>
                       </div>
                     </div>

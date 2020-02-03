@@ -1,18 +1,47 @@
 import React, {Component} from 'react';
 import {successMessage, errorMessage} from '../../helpers';
-
 import { Link } from 'react-router-dom';
-
+import Pagination from "react-js-pagination";
 
 class Invoices extends Component {
     state = {
         invoices_paid_balance: 0,
         invoices_unpaid_balance: 0,
-        number_of_invoices: 0
+        number_of_invoices: 0,
+        active_page: 1,
+        invoices: []
+    }
+
+    constructor(props) {
+      super(props);
+
+      this.handlePageChange = this._handlePageChange.bind(this);
+      this.getPaginatedInvoices.bind(this);
     }
 
     componentDidMount() {
-        
+      const invoices = this.getPaginatedInvoices(0, 9);
+
+      this.setState({invoices: invoices, active_page: 1})
+    }
+
+    _handlePageChange(active_page) {
+      const start = (active_page - 1) * 10;
+      const end = start + 9;
+
+      const invoices = this.getPaginatedInvoices(start, end);
+
+      this.setState({invoices: invoices, active_page: active_page})
+    }
+
+    getPaginatedInvoices(start, end) {
+      
+      const invoices = [];
+      for(let i=start; i <= end; i++) {
+        invoices.push(this.props.invoices[i]);
+      }
+
+      return invoices;
     }
 
     render() {

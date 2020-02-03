@@ -7,7 +7,8 @@ class Settings extends Component {
         email_from: '',
         currency_type: 'Dollars',
         currency_symbol: '$',
-        default_invoice_note: '',
+        date_format: 'mm/dd/yyyy',
+        invoice_note: '',
         tax_code: '',
         tax_rate: 0.0
     }
@@ -21,11 +22,13 @@ class Settings extends Component {
         const name = localStorage.getItem('evermore-invoice-name', null);
         const api_key = localStorage.getItem('evermore-invoice-sendgrid-api-key', null);
         const email_from = localStorage.getItem('evermore-invoice-sendgrid-email-from', null);
-        const currency_symbol = localStorage.getItem('evermore-invoice-sendgrid-currency-symbol', null);
-        const currency_type = localStorage.getItem('evermore-invoice-sendgrid-currency-type', null);
-        const default_invoice_note = localStorage.getItem('evermore-invoice-default-invoice-note', null);
-        const tax_code = localStorage.getItem('evermore-invoice-default-tax-code', null);
-        const tax_rate = localStorage.getItem('evermore-invoice-default-tax-rate', null);
+        const currency_symbol = localStorage.getItem('evermore-invoice-currency-symbol', null);
+        const currency_type = localStorage.getItem('evermore-invoice-currency-type', null);
+        const date_format = localStorage.getItem('evermore-invoice-date-format', null);
+        const invoice_note = localStorage.getItem('evermore-invoice-invoice-note', null);
+        const tax_code = localStorage.getItem('evermore-invoice-tax-code', null);
+        const tax_rate = localStorage.getItem('evermore-invoice-tax-rate', null);
+        
 
         const state = {};
 
@@ -34,7 +37,8 @@ class Settings extends Component {
         if(email_from) state['email_from'] = email_from;
         if(currency_type) state['currency_type'] = currency_type;
         if(currency_symbol) state['currency_symbol'] = currency_symbol;
-        if(default_invoice_note) state['default_invoice_note'] = default_invoice_note;
+        if(date_format) state['date_format'] = date_format;
+        if(invoice_note) state['invoice_note'] = invoice_note;
         if(tax_code) state['tax_code'] = tax_code;
         if(tax_rate) state['tax_rate'] = tax_rate;
 
@@ -46,10 +50,12 @@ class Settings extends Component {
         localStorage.setItem('evermore-invoice-name', this.state.name);
         localStorage.setItem('evermore-invoice-sendgrid-api-key', this.state.api_key);
         localStorage.setItem('evermore-invoice-sendgrid-email-from', this.state.email_from);
-        localStorage.setItem('evermore-invoice-sendgrid-currency-type', this.state.currency_type);
-        localStorage.setItem('evermore-invoice-sendgrid-currency-symbol', this.state.currency_symbol);
-        localStorage.setItem('evermore-invoice-sendgrid-tax-code', this.state.tax_code);
-        localStorage.setItem('evermore-invoice-sendgrid-tax-rate', this.state.tax_rate);
+        localStorage.setItem('evermore-invoice-currency-type', this.state.currency_type);
+        localStorage.setItem('evermore-invoice-currency-symbol', this.state.currency_symbol);
+        localStorage.setItem('evermore-invoice-date-format', this.state.date_format);
+        localStorage.setItem('evermore-invoice-tax-code', this.state.tax_code);
+        localStorage.setItem('evermore-invoice-tax-rate', this.state.tax_rate);
+        localStorage.setItem('evermore-invoice-invoice-note', this.state.invoice_note);
 
         this.props.addSuccessAlert("You settings have been saved locally.");
     }
@@ -154,6 +160,19 @@ class Settings extends Component {
                                                             onChange={(e) => {this.OnChange(e)}}
                                                             />
                                                     </div>  
+                                                    <div className="form-group">
+                                                        <label>Date format</label>
+                                                        <select 
+                                                            value={this.state.date_format} 
+                                                            name="date_format"
+                                                            onChange={(e) => {this.OnChange(e)}} 
+                                                            className="form-control">
+                                                            <option value="mm/dd/yyyy" >mm/dd/yyyy</option>
+                                                            <option value="dd/mm/yyy" >dd/mm/yyy</option>
+                                                        </select>
+                                                    </div>  
+                                                    
+
                                                                     
                                                 </div>
                                                 <div className="form-block-header">
@@ -162,8 +181,8 @@ class Settings extends Component {
                                                 <div className="form-block-body">
                                                     <div className="form-group">
                                                         <textarea type="text" className="form-control" 
-                                                            id="currency_symbol" name="currency_symbol" placeholder="Default Invoice Note (things to remind your client about)" 
-                                                            value={this.state.default_invoice_note} 
+                                                            id="invoice_note" name="invoice_note" placeholder="Default Invoice Note (things to remind your client about)" 
+                                                            value={this.state.invoice_note} 
                                                             onChange={(e) => {this.OnChange(e)}}
                                                             ></textarea>
                                                     </div>  

@@ -5,11 +5,11 @@ import { saveNewClient, createBlankClient } from '../../helpers';
 
 
 function ClientNew(props) {
-    const [values, handleChange] = useForm(createBlankClient());
+    const [client, handleChange] = useForm(createBlankClient());
 
-    const updateClient = function(e) {
+    const saveClient = function(e) {
         e.preventDefault();
-        updateClient(client);       
+        saveNewClient(client);       
     }
 
     return(
@@ -45,21 +45,21 @@ function ClientNew(props) {
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="inputName" className="col-sm-3 col-form-label text-right">Client Name</label>
                                                     <div className="col-sm-9">
-                                                        <input type="text" value={values.name} name="name" onChange={handleChange} className="form-control" id="name" placeholder="Name" />
+                                                        <input type="text" value={client.name} name="name" onChange={handleChange} className="form-control" id="name" placeholder="Name" />
                                                     </div>
                                                 </div>
 
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="inputSubject" className="col-sm-3 col-form-label text-right">Contact Name</label>
                                                     <div className="col-sm-9">
-                                                        <input type="text" value={values.contact_name} name="contact_name" onChange={handleChange} className="form-control" id="contact_name" placeholder="Contact Name" />
+                                                        <input type="text" value={client.contact_name} name="contact_name" onChange={handleChange} className="form-control" id="contact_name" placeholder="Contact Name" />
                                                     </div>
                                                 </div>
 
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="inputMessage" className="col-sm-3 col-form-label text-right">Address</label>
                                                     <div className="col-sm-9">
-                                                        <textarea className="form-control" name="address" value={values.address} onChange={handleChange} id="address" placeholder="Address" rows="4"></textarea>
+                                                        <textarea className="form-control" name="address" value={client.address} onChange={handleChange} id="address" placeholder="Address" rows="4"></textarea>
 
                                                     </div>
                                                 </div>
@@ -67,28 +67,28 @@ function ClientNew(props) {
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="postcode" className="col-sm-3 col-form-label text-right">Postcode/Zipcode</label>
                                                     <div className="col-sm-9">
-                                                        <input type="postcode" value={values.website} onChange={handleChange} name="postcode" className="form-control" id="postcode" placeholder="Mobile" />
+                                                        <input type="postcode" value={client.website} onChange={handleChange} name="postcode" className="form-control" id="postcode" placeholder="Mobile" />
                                                     </div>
                                                 </div>
                                                 
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="inputEmail" className="col-sm-3 col-form-label text-right">E-mail</label>
                                                     <div className="col-sm-9">
-                                                        <input type="email" value={values.email} name="email" onChange={handleChange} className="form-control" id="email" placeholder="Email" />
+                                                        <input type="email" value={client.email} name="email" onChange={handleChange} className="form-control" id="email" placeholder="Email" />
                                                     </div>
                                                 </div>
                                                 
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="phone" className="col-sm-3 col-form-label text-right">Phone</label>
                                                     <div className="col-sm-9">
-                                                        <input type="phone" value={values.phone} onChange={handleChange} value={values.phone} name="phone" className="form-control" id="phone" placeholder="Phone" />
+                                                        <input type="phone" value={client.phone} onChange={handleChange} value={client.phone} name="phone" className="form-control" id="phone" placeholder="Phone" />
                                                     </div>
                                                 </div>
 
                                                 <div className="form-group row gutters">
                                                     <label htmlFor="website" className="col-sm-3 col-form-label text-right">Website</label>
                                                     <div className="col-sm-9">
-                                                        <input type="website" value={values.website} onChange={handleChange} name="website" className="form-control" id="website" placeholder="Mobile" />
+                                                        <input type="website" value={client.website} onChange={handleChange} name="website" className="form-control" id="website" placeholder="https://www.website.com" />
                                                     </div>
                                                 </div>
 
@@ -97,7 +97,7 @@ function ClientNew(props) {
                                                 <div className="form-group row gutters">
                                                     <label className="col-sm-3 col-form-label"></label>
                                                     <div className="col-sm-9">
-                                                        <button type="button" id="submit" onClick={e => updateClient(e)} name="submit" className="btn btn-primary pull-right">Submit Form</button>
+                                                        <button type="button" id="submit" onClick={e => saveClient(e)} name="submit" className="btn btn-primary pull-right">Submit Form</button>
                                                     </div>
                                                 </div>
                                             </div>

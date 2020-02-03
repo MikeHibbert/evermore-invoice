@@ -16,6 +16,7 @@ import ClientEdit from './containers/clients/ClientEdit';
 import Settings from './containers/settings/Settings';
 import Reports from './containers/reports/Reports';
 import { getClients, getInvoices } from './helpers';
+import ClientNew from './containers/clients/ClientNew';
 
 
 class App extends Component {
@@ -75,7 +76,7 @@ class App extends Component {
     const clients = getClients(this.state.wallet_address).then((clients) => {
       that.setState({clients: clients});
       
-      const invoices = getInvoices(this.state.wallet_address).then((invoices) => {
+      const invoices = getInvoices(this.state.wallet_address, clients).then((invoices) => {
         that.setState({invoices: invoices});
   
         this.setLoaded();
@@ -176,11 +177,21 @@ class App extends Component {
       <Route key='invoices' path="/invoices" exact component={() => <Invoices 
         currency_symbol={this.state.currency_symbol}
         wallet_address={this.state.wallet_address} 
+        invoices={this.state.invoices}
+        clients={this.state.clients}
         jwk={this.state.jwk} 
       />} />,
       <Route key='clients' path="/clients" exact component={() => <Clients 
         clients={this.state.clients}
         wallet_address={this.state.wallet_address} 
+        jwk={this.state.jwk} 
+        currency_symbol={this.state.currency_symbol}
+      />} />,
+      <Route key='client-new' exact path="/client/new" exact render={props => <ClientNew
+        {...props}
+        clients={this.state.clients}
+        wallet_address={this.state.wallet_address} 
+        
         jwk={this.state.jwk} 
         currency_symbol={this.state.currency_symbol}
       />} />,
