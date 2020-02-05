@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
+import {profit_img, profits_img, purse_img} from '../../helpers';
+import RecentActivity from './Recent';
 
 
 class Dashboard extends Component {
     state = {
         invoices_paid_balance: 0,
         invoices_unpaid_balance: 0,
+        invoices_overdue_balance: 0,
         number_of_invoices: 0
     }
 
@@ -16,8 +20,7 @@ class Dashboard extends Component {
     render() {
         return(
             <>
-            <header className="page-header">
-              <div className="container-fluid">
+            <header className="page-header">             <div className="container-fluid">
                 <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="page-title">
@@ -33,36 +36,65 @@ class Dashboard extends Component {
                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                   <div className="mini-widget">								
                     <div className="mini-widget-body clearfix">
-                      <img src="img/svg/purse.svg" className="icon" alt="Account Balance" />
-                      <div className="float-right number">945k</div>
-                      <h6>Account Balance</h6>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                  <div className="mini-widget">
-                    <div className="mini-widget-body clearfix">
-                      <img src="img/svg/profit.svg" className="icon" alt="Overall Income" />
-                      <div className="float-right number">790k</div>
-                      <h6>Overall Income</h6>
+                      <img src={purse_img} className="icon" alt="Account Balance" />
+                      <div className="float-right number">
+                        <NumberFormat 
+                          value={this.state.invoices_unpaid_balance} 
+                          decimalScale={2} 
+                          fixedDecimalScale={true} 
+                          displayType={'text'} 
+                          thousandSeparator={true} 
+                          prefix={this.props.currency_symbol} />
+                      </div>
+                      <h6>Outstanding Payments</h6>
                     </div>
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                   <div className="mini-widget red">
                     <div className="mini-widget-body clearfix">
-                      <img src="img/svg/profits.svg" className="icon" alt="Rate of Return" />
-                      <div className="float-right number">85%</div>
-                      <h6>Rate of Return</h6>
+                      <img src={profit_img} className="icon" alt="Overall Income" />
+                      <div className="float-right number">
+                        <NumberFormat 
+                          value={this.state.invoices_overdue_balance} 
+                          decimalScale={2} 
+                          fixedDecimalScale={true} 
+                          displayType={'text'} 
+                          thousandSeparator={true} 
+                          prefix={this.props.currency_symbol} />
+                      </div>
+                      <h6>Overdue Payments</h6>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                  <div className="mini-widget green">
+                    <div className="mini-widget-body clearfix">
+                      <img src={profits_img} className="icon" alt="Rate of Return" />
+                      <div className="float-right number">
+                      <NumberFormat 
+                          value={this.state.invoices_paid_balance} 
+                          decimalScale={2} 
+                          fixedDecimalScale={true} 
+                          displayType={'text'} 
+                          thousandSeparator={true} 
+                          prefix={this.props.currency_symbol} />
+                      </div>
+                      <h6>Recieved Payments</h6>
                     </div>
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                   <div className="mini-widget grey">
                     <div className="mini-widget-body clearfix">
-                      <img src="img/svg/lock.svg" className="icon" alt="Number of Trades" />
-                      <div className="float-right number">185</div>
-                      <h6>Number of Trades</h6>
+                      <span class="icon icon-file-text" style={{fontSize: "44px"}}></span>
+                      <div className="float-right number">
+                      <NumberFormat 
+                          value={this.state.invoices_paid_balance} 
+                          displayType={'text'} 
+                          thousandSeparator={true}  />
+                      </div>
+                      <h6 style={{marginTop: "14px"}}>Number of Invoices</h6>
                     </div>
                   </div>
                 </div>
@@ -94,23 +126,8 @@ class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                  <div className="card">
-                    <div className="card-header">Expert Advice</div>
-                    <div className="card-body height2">
-                      <div className="chartist custom-one">
-                        <div className="booking-source-donut"></div>
-                      </div>
-                      <div className="badge-group-chartist-shades text-center">
-                        <span className="badge">Buy</span>
-                        <span className="badge one">Keep</span>
-                        <span className="badge two">Sell</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <RecentActivity {...this.props} />
               </div>
-
                           
       
               

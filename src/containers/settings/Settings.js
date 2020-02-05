@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 class Settings extends Component {
     state = {
         name: '',
+        address: '',
         api_key: '',
         email_from: '',
         currency_type: 'Dollars',
@@ -20,6 +21,7 @@ class Settings extends Component {
 
     componentDidMount() {
         const name = localStorage.getItem('evermore-invoice-name', null);
+        const address = localStorage.getItem('evermore-invoice-address', null);
         const api_key = localStorage.getItem('evermore-invoice-sendgrid-api-key', null);
         const email_from = localStorage.getItem('evermore-invoice-sendgrid-email-from', null);
         const currency_symbol = localStorage.getItem('evermore-invoice-currency-symbol', null);
@@ -33,6 +35,7 @@ class Settings extends Component {
         const state = {};
 
         if(name) state['name'] = name;
+        if(address) state['address'] = address;
         if(api_key) state['api_key'] = api_key;
         if(email_from) state['email_from'] = email_from;
         if(currency_type) state['currency_type'] = currency_type;
@@ -48,6 +51,7 @@ class Settings extends Component {
 
     OnSave() {
         localStorage.setItem('evermore-invoice-name', this.state.name);
+        localStorage.setItem('evermore-invoice-address', this.state.address);
         localStorage.setItem('evermore-invoice-sendgrid-api-key', this.state.api_key);
         localStorage.setItem('evermore-invoice-sendgrid-email-from', this.state.email_from);
         localStorage.setItem('evermore-invoice-currency-type', this.state.currency_type);
@@ -121,6 +125,13 @@ class Settings extends Component {
                                                             onChange={(e) => {this.OnChange(e)}}
                                                             />
                                                     </div>
+                                                    <div className="form-group">
+                                                        <textarea type="text" className="form-control" 
+                                                            id="address" name="address" placeholder="Address Details" 
+                                                            value={this.state.address} 
+                                                            onChange={(e) => {this.OnChange(e)}}
+                                                            ></textarea>
+                                                    </div>  
                                                 </div>
                                                 <div className="form-block-header">
                                                     <h5>Sendgrid</h5>

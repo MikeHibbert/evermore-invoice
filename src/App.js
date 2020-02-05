@@ -11,6 +11,7 @@ import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import Dashboard from './containers/dashboard/Dashboard';
 import Invoices from './containers/invoices/Invoices';
+import InvoiceEdit from './containers/invoices/InvoiceEdit';
 import Clients from './containers/clients/Clients';
 import ClientEdit from './containers/clients/ClientEdit';
 import Settings from './containers/settings/Settings';
@@ -175,6 +176,14 @@ class App extends Component {
         jwk={this.state.jwk} 
       />} />,
       <Route key='invoices' path="/invoices" exact component={() => <Invoices 
+        currency_symbol={this.state.currency_symbol}
+        wallet_address={this.state.wallet_address} 
+        invoices={this.state.invoices}
+        clients={this.state.clients}
+        jwk={this.state.jwk} 
+      />} />,
+      <Route key='invoice-edit' path="/invoice/edit/:txid" exact render={props => <InvoiceEdit 
+        {...props}
         currency_symbol={this.state.currency_symbol}
         wallet_address={this.state.wallet_address} 
         invoices={this.state.invoices}
