@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
 import {profit_img, profits_img, purse_img} from '../../helpers';
 import RecentActivity from './Recent';
+import QuaterlyActivity from './Quarterly';
 
 
 class Dashboard extends Component {
@@ -116,16 +117,7 @@ class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                  <div className="card">
-                    <div className="card-header">Weekly Income</div>
-                    <div className="card-body height2">
-                      <div className="chartist custom-one">
-                        <div className="barHorizontal"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <QuaterlyActivity {...this.props}  />
                 <RecentActivity {...this.props} />
               </div>
                           
