@@ -34,10 +34,10 @@ class Auth extends Component {
 
   render() {
 
-    let form = (<div class="col-xl-4 col-lg col-md-4 col-sm-4 col-12 margin-auto margin-top-20">
-                  <div class="custom-file">
+    let form = (<div className="col-xl-4 col-lg col-md-4 col-sm-4 col-12 margin-auto margin-top-20">
+                  <div className="custom-file">
                     <input type="file" name="keyfile" className="custom-file-input" onChange={(e) => this.onChange(e)} />
-                    <label class="custom-file-label custom-file-label-primary" for="customFile2">Choose file</label>
+                    <label className="custom-file-label custom-file-label-primary" htmlFor="customFile2">Choose file</label>
                   </div>
                 </div>);
 

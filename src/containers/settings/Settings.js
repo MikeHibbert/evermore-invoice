@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import arweave from '../../arweave-config';
 
 class Settings extends Component {
     state = {
@@ -17,6 +18,7 @@ class Settings extends Component {
     constructor(props) {
         super(props);
         this.OnChange.bind(this);
+        this.onImageChange.bind(this);
     }
 
     componentDidMount() {
@@ -89,7 +91,24 @@ class Settings extends Component {
         this.setState(state);
     }
 
+    onImageChange(event) {
+        if(window.confirm("Are you sure you want to save this file permanetly to the blockchain?")) {
+            const logo_image_file = event.target.files;
+        }
+    }
+
     render() {
+        let logo_img = (
+            <div className="media comments">
+                <div className="mr-3">
+                    <a>
+                        <span className="empty-avatar bg-success">LOGO</span>
+                    </a>
+                </div>
+            </div>);
+
+        let logo_img_name = 'Current Logo (none selected).';
+
         return (
             <>
             <header className="page-header">
@@ -211,6 +230,20 @@ class Settings extends Component {
                                                                 value={this.state.tax_rate} 
                                                                 onChange={(e) => {this.OnChange(e)}}
                                                                 />       
+                                                    </div>
+                                                </div>
+                                                <div className="form-block-header">
+                                                    <h5>Company Logo</h5>
+                                                    <h6>Select a logo to be uploaded to the blockchain that will be included in all your invoices.</h6>
+                                                </div>
+                                                <div className="form-block-body">
+                                                    <div>
+                                                        {logo_img}
+                                                        <label className="margin-bottom-20" >{logo_img_name}</label>
+                                                    </div>
+                                                    <div className="custom-file">
+                                                        <input type="file" name="keyfile" className="custom-file-input" onChange={(e) => this.onImageChange(e)} />
+                                                        <label className="custom-file-label custom-file-label-primary" htmlFor="customFile2">Choose an image to upload</label>
                                                     </div>
                                                 </div>
                                                 <div className="form-block-body">

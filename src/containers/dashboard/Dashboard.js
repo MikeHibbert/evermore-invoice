@@ -88,7 +88,7 @@ class Dashboard extends Component {
                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                   <div className="mini-widget grey">
                     <div className="mini-widget-body clearfix">
-                      <span class="icon icon-file-text" style={{fontSize: "44px"}}></span>
+                      <span className="icon icon-file-text" style={{fontSize: "44px"}}></span>
                       <div className="float-right number">
                       <NumberFormat 
                           value={this.state.invoices_paid_balance} 
