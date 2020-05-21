@@ -1,10 +1,15 @@
 import React from 'react';
 import {useForm} from '../../components/UI/forms/useForm';
+import {getUserInfo} from '../../helpers';
 
 const InvoiceEdit = (props) => {
     const invoice = props.invoices.find((f) => f.txid === props.match.params.txid);
 
     const [values, handleChange] = useForm({...invoice});
+
+    const user = getUserInfo();
+    
+    debugger;
 
     return (<>
         <header className="page-header">
@@ -47,8 +52,8 @@ const InvoiceEdit = (props) => {
 
                             <div className="row gutters">
                                 <div className="col-lg-4 col-md-4 col-sm-4">
-                                    <small>From,</small><br/><br/>
-                                    <h6>Emily</h6>
+                                    <small>From,</small> <br/><br/>
+                                    <h6>{user.name}</h6>
                                     <address>
                                         Street Address<br />
                                         City, Zip Code<br />
@@ -57,7 +62,7 @@ const InvoiceEdit = (props) => {
                                 </div>
                                 <div className="col-lg-4 col-md-4 col-sm-4">
                                     <small>To,</small><br /><br />
-                                    <h6>Boschin</h6>
+                                    <h6>{values.client.name}</h6>
                                     <address>
                                         Street Address<br />
                                         City, Zip Code<br />

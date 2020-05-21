@@ -225,10 +225,17 @@ class App extends Component {
 
     if(!this.state.isAuthenticated) {
       routes = [
-        <Route key='login' path="/login" exact component={() => <Login explandContentArea={() => this.explandContentArea} setWalletAddress={this.setWalletAddress.bind(this)} />} />,
+        <Route key='login' path="/login" exact component={() => <Login 
+              explandContentArea={() => this.explandContentArea} 
+              setWalletAddress={this.setWalletAddress.bind(this)} 
+              />} />,
       ];
       if(this.props.location !== '/login') routes.push(<Redirect key='redirect-to-login' to='/login' />);
       header = null;
+      if(this.state.loading === '') {
+        this.setLoaded();
+      }
+      
     }
 
     if(this.state.isAuthenticated && this.props.location.pathname === '/login') {

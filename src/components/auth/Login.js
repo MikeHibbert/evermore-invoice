@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class Auth extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.explandContentArea();
   }
 

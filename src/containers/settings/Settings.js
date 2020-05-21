@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import arweave from '../../arweave-config';
+import {saveLogo, getLogos, successMessage, errorMessage} from '../../helpers';
 
 class Settings extends Component {
     state = {
@@ -12,7 +13,8 @@ class Settings extends Component {
         date_format: 'mm/dd/yyyy',
         invoice_note: '',
         tax_code: '',
-        tax_rate: 0.0
+        tax_rate: 0.0,
+        logo: null
     }
 
     constructor(props) {
@@ -49,6 +51,15 @@ class Settings extends Component {
 
 
         this.setState(state);
+
+        const that = this;
+
+        getLogos().then(logos => {
+            const logo = logos.find((a, b) => {return a.created > b.created});
+            that.setState({logo: logos[0]});
+        });
+
+        
     }
 
     OnSave() {
@@ -94,6 +105,16 @@ class Settings extends Component {
     onImageChange(event) {
         if(window.confirm("Are you sure you want to save this file permanetly to the blockchain?")) {
             const logo_image_file = event.target.files;
+
+            const that = this;
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const text = reader.result;
+
+                saveLogo(text);                
+            }
+            reader.readAsDataURL(logo_image_file[0]);
         }
     }
 
@@ -106,6 +127,10 @@ class Settings extends Component {
                     </a>
                 </div>
             </div>);
+
+        if(this.state.logo) {
+            logo_img = <img src={this.state.logo.image} />;
+        }
 
         let logo_img_name = 'Current Logo (none selected).';
 
