@@ -26,7 +26,8 @@ class App extends Component {
     balance: 0,
     currency_symbol: '$',
     loading: "",
-    clients: []
+    clients: [],
+    invoices: []
   }
 
   constructor(props) {

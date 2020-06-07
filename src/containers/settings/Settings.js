@@ -110,6 +110,7 @@ class Settings extends Component {
 
             const reader = new FileReader();
             reader.onload = function() {
+                debugger;
                 const text = reader.result;
 
                 saveLogo(text);                
@@ -128,11 +129,15 @@ class Settings extends Component {
                 </div>
             </div>);
 
+        let logo_img_name = 'Current Logo (none selected).';
+
         if(this.state.logo) {
-            logo_img = <img src={this.state.logo.image} />;
+            const image_url = this.state.logo.image;
+            logo_img = <a href={transaction_url} target="_blank"><img width="200px" src={image_url} style={{marginBottom: "10px"}}/></a>;
+            logo_img_name = '';
         }
 
-        let logo_img_name = 'Current Logo (none selected).';
+        
 
         return (
             <>
@@ -157,7 +162,7 @@ class Settings extends Component {
                                             <p><span className="icon-info2"></span> All settings are save locally in your browser and will <strong>NOT</strong> be stored in the blockchain. 
                                             Only Invoices and Client information are encrypted and stored, and only someone with your wallet credentials can access them.</p>
                                         <form>
-                                            <div className="form-block">
+                                            <div className="form-block margin-bottom-20">
                                                 <div className="form-block-header">
                                                     <h5>About You</h5>
                                                 </div>
@@ -177,6 +182,8 @@ class Settings extends Component {
                                                             ></textarea>
                                                     </div>  
                                                 </div>
+                                            </div>
+                                            <div className="form-block margin-bottom-20">
                                                 <div className="form-block-header">
                                                     <h5>Sendgrid</h5>
                                                     <h6>Email your invoices to clients using Sendgrid</h6>
@@ -196,6 +203,8 @@ class Settings extends Component {
                                                             />
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div className="form-block margin-bottom-20">
                                                 <div className="form-block-header">
                                                     <h5>Regional Settings</h5>
                                                     <h6>Choose your currency symbol</h6>
@@ -223,13 +232,15 @@ class Settings extends Component {
                                                             onChange={(e) => {this.OnChange(e)}} 
                                                             className="form-control">
                                                             <option value="mm/dd/yyyy" >mm/dd/yyyy</option>
-                                                            <option value="dd/mm/yyy" >dd/mm/yyy</option>
+                                                            <option value="dd/mm/yyyy" >dd/mm/yyyy</option>
                                                         </select>
                                                     </div>  
                                                     
 
                                                                     
                                                 </div>
+                                            </div>
+                                            <div className="form-block margin-bottom-20">
                                                 <div className="form-block-header">
                                                     <h5>Invoice Settings</h5>
                                                 </div>
@@ -257,6 +268,8 @@ class Settings extends Component {
                                                                 />       
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div className="form-block margin-bottom-20">
                                                 <div className="form-block-header">
                                                     <h5>Company Logo</h5>
                                                     <h6>Select a logo to be uploaded to the blockchain that will be included in all your invoices.</h6>
@@ -271,23 +284,26 @@ class Settings extends Component {
                                                         <label className="custom-file-label custom-file-label-primary" htmlFor="customFile2">Choose an image to upload</label>
                                                     </div>
                                                 </div>
-                                                <div className="form-block-body">
-                                                    <button type="button" id="submit" 
-                                                            onClick={this.OnSave.bind(this)} name="submit" 
-                                                            className="btn btn-primary ">Update settings</button>  
-                                                             
-                                                </div>
-
+                                            </div>
+                                            <div className="form-block margin-bottom-20">
                                                 <div className="form-block-header">
                                                     <h5>Options</h5>
                                                 </div>
                                                 <div className="form-block-body">
                                                     <button type="button" id="submit" 
-                                                            onClick={this.OnExport.bind(this)} name="submit" 
-                                                            className="btn btn-warning" style={{marginRight: '5px'}}>Export settings</button>  
+                                                            onClick={this.OnSave.bind(this)} name="submit" 
+                                                            className="btn btn-primary ">Update settings</button>  
+
                                                     <button type="button" id="submit" 
+                                                            style={{float: "right"}}
                                                             onClick={this.OnImport.bind(this)} name="submit" 
                                                             className="btn btn-success ">Import settings</button> 
+
+                                                    <button type="button" id="submit" 
+                                                            style={{float: "right", marginRight: '5px'}}
+                                                            onClick={this.OnExport.bind(this)} name="submit" 
+                                                            className="btn btn-warning" >Export settings</button>  
+                                                    
                                                              
                                                 </div>
                                             </div>

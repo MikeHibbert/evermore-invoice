@@ -38,14 +38,14 @@ class UserMenu extends Component {
             <div>
             <ul className="header-actions">
                 <li className={this.state.menuClasses}>
-                    <a href="#" id="userSettings" className="user-settings clearfix" data-toggle="dropdown" aria-haspopup="true">
+                    <a id="userSettings" className="user-settings clearfix" data-toggle="dropdown" aria-haspopup="true" style={{cursor: 'pointer'}}>
                         <span className="user-name" onClick={this.OnClick.bind(this)}>{this.state.name} <i className="icon-chevron-small-down downarrow"></i></span>
                     </a>
                     <div className={this.state.panelClasses} aria-labelledby="userSettings">
                         <div className="admin-settings">
                             <ul className="admin-settings-list">
                                 <li>
-                                    <a href="">
+                                    <a>
                                         <span className="icon icon-wallet"></span>
                                         <span className="text-name">{this.props.current_balance} AR</span>
                                     </a>

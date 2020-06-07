@@ -7,7 +7,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-    "arweave": "^1.6.0",
+    "arweave": "^1.7.1",
     "faker": "^4.1.0",
     "pdfmake": "git+https://github.com/bpampuch/pdfmake.git",
     "react": "^16.12.0",
