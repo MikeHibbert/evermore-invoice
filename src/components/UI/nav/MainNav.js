@@ -50,7 +50,7 @@ class MainNav extends Component {
         <div className={this.state.nav_bar_classes} id="navbarNavDropdown">
           <ul className="navbar-nav">
             <li className={this.getLiClass("/")}>
-              <Link className={this.getLinkClass("/")} to="/" 
+              <Link className={this.getLinkClass("/")} to="/dashboard" 
                 onClick={this.closeMobile.bind(this)} >
                 <i className="nav-icon icon-blur_on"></i>
                 <span className="nav-item">Dashboard</span>

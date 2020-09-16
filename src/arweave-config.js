@@ -2,6 +2,8 @@ import Arweave from 'arweave/web';
 
 const hostname = window && window.location && window.location.hostname;
 
+export const smartweaveContractID = '';
+
 let arweave_config = {
     host: 'arweave.net',// Hostname or IP address for a Arweave host
     port: 443,          // Port

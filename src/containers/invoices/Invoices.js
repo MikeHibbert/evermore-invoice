@@ -50,7 +50,8 @@ class Invoices extends Component {
 
     render() {
       const invoices = this.state.invoices.map(invoice => {
-        return <InvoiceRow key={invoice.txid} invoice={invoice} />
+        debugger;
+        return <InvoiceRow key={invoice.txid} invoice={invoice} currency_symbol={this.props.currency_symbol} />
       })
 
       return(

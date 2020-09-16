@@ -10,6 +10,7 @@ class Settings extends Component {
         email_from: '',
         currency_type: 'Dollars',
         currency_symbol: '$',
+        currency_decimal_places: '',
         date_format: 'mm/dd/yyyy',
         invoice_note: '',
         tax_code: '',
@@ -30,6 +31,7 @@ class Settings extends Component {
         const email_from = localStorage.getItem('evermore-invoice-sendgrid-email-from', null);
         const currency_symbol = localStorage.getItem('evermore-invoice-currency-symbol', null);
         const currency_type = localStorage.getItem('evermore-invoice-currency-type', null);
+        const currency_decimal_places = localStorage.getItem('evermore-invoice-currency-decimal-places');
         const date_format = localStorage.getItem('evermore-invoice-date-format', null);
         const invoice_note = localStorage.getItem('evermore-invoice-invoice-note', null);
         const tax_code = localStorage.getItem('evermore-invoice-tax-code', null);
@@ -44,6 +46,7 @@ class Settings extends Component {
         if(email_from) state['email_from'] = email_from;
         if(currency_type) state['currency_type'] = currency_type;
         if(currency_symbol) state['currency_symbol'] = currency_symbol;
+        if(currency_decimal_places) state['currency_decimal_places'] = currency_decimal_places;
         if(date_format) state['date_format'] = date_format;
         if(invoice_note) state['invoice_note'] = invoice_note;
         if(tax_code) state['tax_code'] = tax_code;
@@ -69,6 +72,7 @@ class Settings extends Component {
         localStorage.setItem('evermore-invoice-sendgrid-email-from', this.state.email_from);
         localStorage.setItem('evermore-invoice-currency-type', this.state.currency_type);
         localStorage.setItem('evermore-invoice-currency-symbol', this.state.currency_symbol);
+        localStorage.setItem('evermore-invoice-currency-decimal-places', this.state.currency_decimal_places);
         localStorage.setItem('evermore-invoice-date-format', this.state.date_format);
         localStorage.setItem('evermore-invoice-tax-code', this.state.tax_code);
         localStorage.setItem('evermore-invoice-tax-rate', this.state.tax_rate);
@@ -78,18 +82,42 @@ class Settings extends Component {
     }
 
     OnExport() {
-        const settings = JSON.stringify(this.state);
-
-        console.log(settings);
+        this.exportToJson(this.state);
     }
 
-    OnImport() {
-        const state = '';
-        const settings = JSON.parse(state);
+    exportToJson(objectData) {
+        let filename = "evermore-invoice-settings-backup.json";
+        let contentType = "application/json;charset=utf-8;";
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(objectData)))], { type: contentType });
+          navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+          var a = document.createElement('a');
+          a.download = filename;
+          a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(objectData));
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      }
 
-        this.setState(settings);
+    OnImport(event) {
+        const settings_files = event.target.files;
 
-        this.OnSave();
+        const that = this;
+
+        const reader = new FileReader();
+        reader.onload = function() {
+            const text = reader.result;
+
+            const settings = JSON.parse(text);
+
+            that.setState(settings);     
+            that.OnSave();     
+        }
+
+        reader.readAsText(settings_files[0]);
     }
 
     OnChange(event) {
@@ -133,6 +161,7 @@ class Settings extends Component {
 
         if(this.state.logo) {
             const image_url = this.state.logo.image;
+            const transaction_url = "http://www.arweave.net/tx/" + this.state.logo.txid + '/status';
             logo_img = <a href={transaction_url} target="_blank"><img width="200px" src={image_url} style={{marginBottom: "10px"}}/></a>;
             logo_img_name = '';
         }
@@ -225,6 +254,13 @@ class Settings extends Component {
                                                             />
                                                     </div>  
                                                     <div className="form-group">
+                                                        <input type="text" className="form-control" 
+                                                            id="currency_decimal_places" name="currency_decimal_places" placeholder="Currency Decimal Places (default is 2)" 
+                                                            value={this.state.currency_decimal_places} 
+                                                            onChange={(e) => {this.OnChange(e)}}
+                                                            />
+                                                    </div> 
+                                                    <div className="form-group">
                                                         <label>Date format</label>
                                                         <select 
                                                             value={this.state.date_format} 
@@ -295,14 +331,18 @@ class Settings extends Component {
                                                             className="btn btn-primary ">Update settings</button>  
 
                                                     <button type="button" id="submit" 
-                                                            style={{float: "right"}}
-                                                            onClick={this.OnImport.bind(this)} name="submit" 
-                                                            className="btn btn-success ">Import settings</button> 
-
-                                                    <button type="button" id="submit" 
                                                             style={{float: "right", marginRight: '5px'}}
                                                             onClick={this.OnExport.bind(this)} name="submit" 
                                                             className="btn btn-warning" >Export settings</button>  
+
+                                                    <div className="custom-file pull-right margin-top-20">
+                                                        <input type="file" id="import-settings" 
+                                                                style={{float: "right"}}
+                                                                onChange={(e) => { this.OnImport(e) }} name="submit" 
+                                                                className="custom-file-input" /> 
+                                                        <label className="custom-file-label custom-file-label-info" htmlFor="import-settings">Import your evermore-invoice-settings-backup.json.</label>
+                                                    </div>
+                                                    
                                                     
                                                              
                                                 </div>

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import UserMenu from './components/UI/nav/UserMenu';
 import MainNav from './components/UI/nav/MainNav';
 import 'react-toastify/dist/ReactToastify.css';
+import HomePage from './containers/home/HomePage';
 import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import Dashboard from './containers/dashboard/Dashboard';
@@ -25,7 +26,7 @@ class App extends Component {
     isAuthenticated: null,
     balance: 0,
     currency_symbol: '$',
-    loading: "",
+    loading: "loaded",
     clients: [],
     invoices: []
   }
@@ -75,13 +76,14 @@ class App extends Component {
 
   getUserData() {
     const that = this;
+    this.setLoading();
     const clients = getClients(this.state.wallet_address).then((clients) => {
       that.setState({clients: clients});
       
       const invoices = getInvoices(this.state.wallet_address, clients).then((invoices) => {
         that.setState({invoices: invoices});
   
-        this.setLoaded();
+        that.setLoaded();
       });
     });    
   }
@@ -171,7 +173,7 @@ class App extends Component {
     let header = null;
 
     let routes = [
-      <Route key='dashboard' path="/" exact component={() => <Dashboard 
+      <Route key='dashboard' path="/dashboard" exact component={() => <Dashboard 
         currency_symbol={this.state.currency_symbol} 
         wallet_address={this.state.wallet_address} 
         jwk={this.state.jwk} 
@@ -184,6 +186,14 @@ class App extends Component {
         jwk={this.state.jwk} 
       />} />,
       <Route key='invoice-edit' path="/invoice/edit/:txid" exact render={props => <InvoiceEdit 
+        {...props}
+        currency_symbol={this.state.currency_symbol}
+        wallet_address={this.state.wallet_address} 
+        invoices={this.state.invoices}
+        clients={this.state.clients}
+        jwk={this.state.jwk} 
+      />} />,
+      <Route key='invoice-new' path="/invoice/new" exact render={props => <InvoiceEdit 
         {...props}
         currency_symbol={this.state.currency_symbol}
         wallet_address={this.state.wallet_address} 
@@ -230,19 +240,18 @@ class App extends Component {
               explandContentArea={() => this.explandContentArea} 
               setWalletAddress={this.setWalletAddress.bind(this)} 
               />} />,
+        <Route key='homepage' path="/" exact component={() => <HomePage />} />
       ];
-      if(this.props.location !== '/login') routes.push(<Redirect key='redirect-to-login' to='/login' />);
+      if(this.props.location !== '/login') routes.push(<Redirect key='redirect-to-login' to='/' />);
       header = null;
-      if(this.state.loading === '') {
-        this.setLoaded();
-      }
+      
       
     }
 
-    if(this.state.isAuthenticated && this.props.location.pathname === '/login') {
+    if(this.state.isAuthenticated && (this.props.location.pathname === '/login' || this.props.location.pathname === '/')) {
       routes = (
         <>
-        <Redirect to='/' />
+        <Redirect to='/dashboard' />
         </>
       );
     }
