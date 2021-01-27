@@ -133,6 +133,7 @@ class Settings extends Component {
 
         if(this.state.logo) {
             const image_url = this.state.logo.image;
+            const transaction_url = `https://arweave.net/${this.state.logo.txid}`;
             logo_img = <a href={transaction_url} target="_blank"><img width="200px" src={image_url} style={{marginBottom: "10px"}}/></a>;
             logo_img_name = '';
         }
