@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "arweave": "^1.10.3",
+    "axios": "^0.21.1",
     "faker": "^4.1.0",
     "pdfmake": "git+https://github.com/bpampuch/pdfmake.git",
     "react": "^16.12.0",
