@@ -127,9 +127,10 @@ export async function getTSheetsGQL() {
                 } catch (e) {
                     console.error(`${item.data.clientid} created error ${e}`);
                 }
-                
-
-                transactions.push(item);
+            
+                if(isTimesheet(item)) {
+                    transactions.push(item);
+                }                
             }
 
             hasNextPage = data.transactions.pageInfo.hasNextPage;
@@ -143,4 +144,14 @@ export async function getTSheetsGQL() {
     }
 
     return transactions;
+}
+
+const isTimesheet = (transaction) => {
+    const timesheet_tags_found = transaction.tags.filter(tag => tag.name == 'Type' && tag.value != 'Client');
+
+    if(timesheet_tags_found.length > 0) {
+        return true;
+    }
+
+    return false;
 }
