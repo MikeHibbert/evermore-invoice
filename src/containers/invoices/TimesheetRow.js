@@ -6,9 +6,11 @@ function CheckBox(e) {
 
     const checked = e.target.value;
 
-    if (checked == true) {
+    if (checked == 'off') {
+        document.getElementById("myCheck").value="on";
         console.log('checked box')
     } else {
+        document.getElementById("myCheck").value="off";
         console.log('unchecked box')
     }
 }
@@ -22,7 +24,7 @@ const TimesheetRow = function(props) {
     }
     return(
         <tr>
-            <td><input type="checkbox" id="myCheck" onClick={(e) => CheckBox(e)}/></td>
+            <td><input type="checkbox" value="off" id="myCheck" onClick={(e) => CheckBox(e)}/></td>
             <td><Date date={props.timesheet.start} /></td>
             <td><Date date={props.timesheet.finish} /></td>
             <td>{client_name}</td>

@@ -5,9 +5,8 @@ import { getTSheetsGQL } from './helpers';
 function CheckBox(e) {
 
     const checked = e.target.value;
-
-    debugger;
-    if (checked == true) {
+    
+    if (checked == 'on') {
         console.log('checked box')
     } else {
         console.log('unchecked box')
