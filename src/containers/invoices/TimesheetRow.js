@@ -1,19 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Date from '../../components/UI/Date';
-
-function CheckBox(e) {
-
-    const checked = e.target.value;
-
-    if (checked == 'off') {
-        document.getElementById("myCheck").value="on";
-        console.log('checked box')
-    } else {
-        document.getElementById("myCheck").value="off";
-        console.log('unchecked box')
-    }
-}
+import { CheckBox } from './CheckBox';
 
 const TimesheetRow = function(props) {
     console.log(props.timesheet);
@@ -22,9 +10,10 @@ const TimesheetRow = function(props) {
     if(props.timesheet.hasOwnProperty('client')) {
         client_name = props.timesheet.client.name;
     }
+    const { handleCheckboxChange , txid, checked } = props;
     return(
         <tr>
-            <td><input type="checkbox" value="off" id="myCheck" onClick={(e) => CheckBox(e)}/></td>
+            <td><CheckBox txid={ txid } checked={checked} handleCheckboxChange={ handleCheckboxChange }/></td>
             <td><Date date={props.timesheet.start} /></td>
             <td><Date date={props.timesheet.finish} /></td>
             <td>{client_name}</td>
