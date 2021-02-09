@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import Date from '../../components/UI/Date';
 import { CheckBox } from './CheckBox';
 

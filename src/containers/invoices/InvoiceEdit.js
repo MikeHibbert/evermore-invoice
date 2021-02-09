@@ -9,7 +9,7 @@ const InvoiceEdit = (props) => {
 
     const user = getUserInfo();
     
-    debugger;
+    //debugger;
 
     return (<>
         <header className="page-header">
