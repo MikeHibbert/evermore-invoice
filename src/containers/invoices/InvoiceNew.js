@@ -22,15 +22,12 @@ export default class InvoiceNew extends Component {
     render() {    
         return (
             <div className="main-content">
-                <select style={{fontSizeAdjust: "100%"}} className="form-control col-3" onChange={(e) => { this.OnSetCompany(e) }} value={this.state.selectedCompany}>
-                {this.state.clients_transactions.map(transaction => {
-                    console.log(transaction);
-                    return <option key={transaction.id} value={transaction.id}>{transaction.client_data.name}</option>
-                })}
-                </select>
-                <ClientField clients_transactions={this.state.clients_transactions} selectedCompany={this.state.selectedCompany}></ClientField>
+                <form>
+                    <label>
+                        <ClientField/>
+                    </label>
+                </form>
             </div>
-            
         );
     }
 }
