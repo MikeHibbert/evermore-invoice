@@ -45,24 +45,50 @@ export default class TimeTable extends Component {
         })
 
         return (
-            <div className="main-content">
-                <button className="btn btn-default form-control" onClick={() => {this.onImport()}}>Load Timelord Timesheets</button>
-                <table className="table table-align-middle border-bottom mb-6">
-                    <thead>
-                        <tr>
-                            <th className="text-align" colSpan='3'>Timesheet Selection</th>
-                        </tr>
-                        <tr> 
-                            <th><SelectAll selectAll={(checked) => {this.selectAll(checked)} }/> Select All</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                            <th>Client</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {timesheets}
-                    </tbody>
-                </table>
+            <div className="form-group">
+                <button type="button" className="form-control" data-toggle="modal" data-target="#customModalTwo">
+                    Open Timesheet Selection
+                </button>
+                <div className="modal fade bd-example-modal-xl show" id="customModalTwo" tabindex="-1" role="dialog" aria-labelledby="customModalTwoLabel" style={{display: 'block'}} aria-modal="true">
+                    <div className="modal-dialog modal-xl" role="document">
+                        <div className="modal-content" style={{ backgroundColor: '#FFFFFF' }}>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="customModalTwoLabel">Timesheet Selection</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <button className="btn btn-default form-control" onClick={() => {this.onImport()}}>Load Timelord Timesheets</button>
+                                <table className="table table-align-middle border-bottom mb-6">
+                                    <thead>
+                                        <tr>
+                                            <th className="text-align" colSpan='3'>Timesheet Selection</th>
+                                        </tr>
+                                        <tr> 
+                                            <th><SelectAll selectAll={(checked) => {this.selectAll(checked)} }/> Select All</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Client</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {timesheets}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="modal-footer custom">
+                                <div className="left-side">
+                                    <button type="button" className="btn btn-link danger" data-dismiss="modal">Cancel</button>
+                                </div>
+                                <div className="divider"></div>
+                                <div className="right-side">
+                                    <button type="button" className="btn btn-link success">Import Selected</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
