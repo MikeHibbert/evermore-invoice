@@ -110,10 +110,10 @@ class Invoices extends Component {
 										<table className="table m-0">
 											<thead>
 												<tr>
+                          <th>Client</th>
 													<th>#TxID</th>
                           <th>Created</th>
-													<th>Client</th>
-													<th>Status</th>
+													<th>Due Date</th>
                           <th>Total Value</th>
                           <th>Actions</th>
 												</tr>
