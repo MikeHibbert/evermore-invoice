@@ -25,6 +25,10 @@ export default class TimeTable extends Component {
         dialog_open: false
     }
 
+    componentDidMount() {
+        this.onImport()
+    }
+
     modalIsOpen() {
         return this.state.dialog_open;
     }
@@ -112,7 +116,6 @@ export default class TimeTable extends Component {
                 contentLabel="Example Modal"
                 >
                     <div>
-                        <button className="btn btn-default form-control" onClick={() => {this.onImport()}}>Load Timelord Timesheets</button>
                         <table className="table table-align-middle border-bottom mb-6">
                             <thead>
                                 <tr>

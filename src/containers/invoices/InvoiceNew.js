@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import TimeTable from './TimeTable';
 import ClientField from './ClientField';
-import CostRelatedStuff from './CostRelatedStuff';
 import Moment from 'react-moment';
 import { toast } from 'react-toastify';
 import { getClientsGQL } from './helpers';
@@ -12,7 +11,9 @@ export default class InvoiceNew extends Component {
         //clients_transactions: [],
         clientid: null,
         timesheets: [],
-        otherinfo: []
+        otherinfo: [],
+        totalvalue: 0,
+        costph:0,
     }
 
     /*async componentDidMount() {
@@ -25,7 +26,6 @@ export default class InvoiceNew extends Component {
         super(props)
         this.onSelectClient.bind(this)
         this.onSendTimesheets.bind(this)
-        this.onGotTheStuff.bind(this)
     }
 
     onSelectClient(clientid) {
@@ -36,8 +36,23 @@ export default class InvoiceNew extends Component {
         this.setState({ timesheets: txid })
     }
 
-    onGotTheStuff(stuff_to_give) {
-        this.setState({ otherinfo: stuff_to_give })
+    componentDidMount() {
+        const creationdate = new Date()
+     
+        const today1 = new Date();
+        const today2 = today1.getMonth();
+        today1.setMonth(today1.getMonth()+1);
+
+        if(today1.getMonth() == today2) { today1.setDate(0) }
+        today1.setHours(0, 0, 0, 0);
+
+        
+
+        this.setState({ otherinfo: {duedate: today1, created: creationdate} })
+    }
+
+    costPerHour(e) {
+        this.setState({costph: e.target.value})
     }
 
     validateNewInvoice() {
@@ -64,7 +79,16 @@ export default class InvoiceNew extends Component {
     }
 
     render() {
-        const timesheets = this.state.timesheets.map(timesheet => {
+        let totaltime = 0;
+        for(let i in this.state.timesheets) {
+            const starttime = this.state.timesheets[i].start;
+            const endtime = this.state.timesheets[i].finish;
+            const timedifference = endtime - starttime;
+            totaltime += timedifference;
+        }
+
+        const totalcost = totaltime * this.state.costph;
+        const timesheet_table_data = this.state.timesheets.map(timesheet => {
 
             let client_name = 'UNKNOWN';
             if(timesheet.hasOwnProperty('client')) {
@@ -75,34 +99,12 @@ export default class InvoiceNew extends Component {
                     <td>{client_name}</td>
                     <td><Moment format="DD/MM/YYYY hh:mm:ss">{timesheet.start}</Moment></td>
                     <td><Moment format="DD/MM/YYYY hh:mm:ss">{timesheet.finish}</Moment></td>
+                    <td><Moment format="DD/MM/YYYY">{this.state.otherinfo.created}</Moment></td>
+                    <td><Moment format="DD/MM/YYYY">{this.state.otherinfo.duedate}</Moment></td>
+                    <td>{this.state.totalvalue}</td>
                 </tr>
             )
-        })
-
-        const cost_date_object = this.state.otherinfo.map(cost_date => {
-            return (
-                <tr>
-                    <td><Moment format="DD/MM/YYYY">{cost_date.created}</Moment></td>
-                    <td><Moment format="DD/MM/YYYY">{cost_date.duedate}</Moment></td>
-                    <td>{cost_date.totalvalue}</td>
-                </tr>
-            )
-        })
-
-        const timesheet_table_data = this.state.timesheets.map(timesheet => {
-
-            let client_name = 'UNKNOWN';
-            if(timesheet.hasOwnProperty('client')) {
-                client_name = timesheet.client.name;
-            }
-            return (
-                <> 
-                    {timesheets}
-                    {cost_date_object}
-                </>
-            )
-        })
-        
+        })        
         
         let timesheet_table = null;
         if(timesheet_table_data.length > 0) {
@@ -137,7 +139,9 @@ export default class InvoiceNew extends Component {
                         <div className="card-body">
                             <ClientField clients={ this.props.clients } onSelectClient={ (clientid) => { this.onSelectClient(clientid) } } />
                             <TimeTable timesheets={ this.props.timesheets } onSendTimesheets={ (timesheets) => { this.onSendTimesheets(timesheets) }}/>
-                            <CostRelatedStuff created={ this.props.created } duedate={ this.props.duedate } totalvalue={ this.props.totalvalue } onGotTheStuff={ (stuff_to_give) => { this.onGotTheStuff(stuff_to_give) }}/>
+                            <div className="form-group">
+                            Cost Per Hour <input className="form-control" type="text" onChange={(e) => {this.costPerHour(e)}} />
+                            </div>
                             <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={(event) => { this.onSubmit(event) }}>Submit Form</button>
                         </div>
                     </div>
