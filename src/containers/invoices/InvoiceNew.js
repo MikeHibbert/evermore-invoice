@@ -50,20 +50,29 @@ export default class InvoiceNew extends Component {
 
         this.setState({ otherinfo: {duedate: today1, created: creationdate} })
     }
-
-    costPerHour(e) {
+    
+    totalValueCalculator(e) {
         this.setState({costph: e.target.value})
+        this.costPerHour()
     }
+
+    costPerHour() {
+        const totalvalue = this.state.timesheets.totalTime * this.state.costph;
+        this.setState({totalvalue: totalvalue})
+    }
+
+    
 
     validateNewInvoice() {
         if(this.state.timesheets.length < 3 ) {
             toast("Please select some timesheets before submission!", { type: toast.TYPE.ERROR }); 
     
             return false;
-        } else { 
-            if(this.state.otherinfo.length < 3 ) {
-                toast("Please fill in the other info before submission!", { type: toast.TYPE.ERROR });
-            }
+        }
+        if(this.state.otherinfo.length < 2 ) { 
+            toast("Please fill in the other info before submission!", { type: toast.TYPE.ERROR });
+            
+            return false
         }
 
         return true;
@@ -81,10 +90,7 @@ export default class InvoiceNew extends Component {
     render() {
         let totaltime = 0;
         for(let i in this.state.timesheets) {
-            const starttime = this.state.timesheets[i].start;
-            const endtime = this.state.timesheets[i].finish;
-            const timedifference = endtime - starttime;
-            totaltime += timedifference;
+            totaltime += this.state.timesheets[i].totalTime;
         }
 
         const totalcost = totaltime * this.state.costph;
@@ -137,12 +143,12 @@ export default class InvoiceNew extends Component {
                 <form style={{ width: '20%', display:'inline-block' }}>
                     <div className="card m-0">
                         <div className="card-body">
-                            <ClientField clients={ this.props.clients } onSelectClient={ (clientid) => { this.onSelectClient(clientid) } } />
+                            <ClientField clients={ this.props.clients } onSelectClient={ (clientid) => { this.onSelectClient(clientid) }}/>
                             <TimeTable timesheets={ this.props.timesheets } onSendTimesheets={ (timesheets) => { this.onSendTimesheets(timesheets) }}/>
                             <div className="form-group">
-                            Cost Per Hour <input className="form-control" type="text" onChange={(e) => {this.costPerHour(e)}} />
+                            Cost Per Hour <input className="form-control" type="text" onChange={ (e) => {this.totalValueCalculator(e) }}/>
                             </div>
-                            <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={(event) => { this.onSubmit(event) }}>Submit Form</button>
+                            <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Form</button>
                         </div>
                     </div>
                 </form>

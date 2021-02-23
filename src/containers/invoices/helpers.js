@@ -1,5 +1,6 @@
 import arweave from '../../arweave-config';
 import settings from '../../app-config';
+import { time } from 'faker';
 const axios = require('axios')
 
 export async function getTSheets() {
@@ -119,6 +120,16 @@ export async function getTSheetsGQL() {
                         item[key] = new Date(data);
                     }
                 });
+
+
+                if(item.hasOwnProperty('start') && item.hasOwnProperty('finish')) {
+                    const starttime = item.start;
+                    const endtime = item.finish;
+                    const timedifference = endtime - starttime;
+                    item['totalTime'] = timedifference;
+                } else {
+                    item['totalTime'] = 0;
+                }
 
                 try {
                     const client_data = await arweave.transactions.getData(item.data.clientid , {decode: true, string: true});
