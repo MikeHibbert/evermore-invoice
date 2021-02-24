@@ -52,16 +52,16 @@ export default class InvoiceNew extends Component {
     }
     
     totalValueCalculator(e) {
-        this.setState({costph: e.target.value})
-        this.costPerHour()
-    }
+        this.setState({})
+        let totalvalue = 0 
+        for(let i in this.state.timesheets) {
+            const timesheet = this.state.timesheets[i];
+            totalvalue = timesheet.totalTime * parseFloat(e.target.value); 
+        }
 
-    costPerHour() {
-        const totalvalue = this.state.timesheets.totalTime * this.state.costph;
-        this.setState({totalvalue: totalvalue})
-    }
-
-    
+        debugger;
+        this.setState({totalvalue: totalvalue, costph: parseFloat(e.target.value)})
+    }   
 
     validateNewInvoice() {
         if(this.state.timesheets.length < 3 ) {
@@ -88,12 +88,6 @@ export default class InvoiceNew extends Component {
     }
 
     render() {
-        let totaltime = 0;
-        for(let i in this.state.timesheets) {
-            totaltime += this.state.timesheets[i].totalTime;
-        }
-
-        const totalcost = totaltime * this.state.costph;
         const timesheet_table_data = this.state.timesheets.map(timesheet => {
 
             let client_name = 'UNKNOWN';
