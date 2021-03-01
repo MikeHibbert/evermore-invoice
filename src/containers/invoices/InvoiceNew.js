@@ -3,7 +3,9 @@ import TimeTable from './TimeTable';
 import ClientField from './ClientField';
 import Moment from 'react-moment';
 import { toast } from 'react-toastify';
-import { getClientsGQL } from './helpers';
+import { getClientsGQL, currencyFormatter } from './helpers';
+import moment from 'moment';
+
 
 
 export default class InvoiceNew extends Component {
@@ -40,38 +42,30 @@ export default class InvoiceNew extends Component {
         const creationdate = new Date()
      
         const today1 = new Date();
-        const today2 = today1.getMonth();
-        today1.setMonth(today1.getMonth()+1);
+        const today2 = moment(today1).add(30, "days");
 
-        if(today1.getMonth() == today2) { today1.setDate(0) }
-        today1.setHours(0, 0, 0, 0);
-
-        
-
-        this.setState({ otherinfo: {duedate: today1, created: creationdate} })
+        this.setState({ otherinfo: {duedate: today2, created: creationdate} })
     }
     
     totalValueCalculator(e) {
-        this.setState({})
         let totalvalue = 0 
+        if(e.target.value == "") {
+            this.setState({totalvalue: 0})
+            return;
+        }
         for(let i in this.state.timesheets) {
             const timesheet = this.state.timesheets[i];
-            totalvalue = timesheet.totalTime * parseFloat(e.target.value); 
+            totalvalue += timesheet.totalTime * parseFloat(e.target.value); 
         }
-
-        debugger;
+        
         this.setState({totalvalue: totalvalue, costph: parseFloat(e.target.value)})
     }   
 
     validateNewInvoice() {
-        if(this.state.timesheets.length < 3 ) {
-            toast("Please select some timesheets before submission!", { type: toast.TYPE.ERROR }); 
-    
+        if(this.state.timesheets.length < 1 ) {
             return false;
         }
-        if(this.state.otherinfo.length < 2 ) { 
-            toast("Please fill in the other info before submission!", { type: toast.TYPE.ERROR });
-            
+        if(this.state.otherinfo.length < 1 ) {
             return false
         }
 
@@ -84,24 +78,26 @@ export default class InvoiceNew extends Component {
         if(this.validateNewInvoice() == true) {
             
             this.props.history.push('/invoices')
-        }         
+        } else {
+            toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
+        }
     }
 
     render() {
         const timesheet_table_data = this.state.timesheets.map(timesheet => {
-
+            
             let client_name = 'UNKNOWN';
             if(timesheet.hasOwnProperty('client')) {
                 client_name = timesheet.client.name;
             }
+            let totalcost = timesheet.totalTime * this.state.costph;
             return (
                 <tr>
                     <td>{client_name}</td>
                     <td><Moment format="DD/MM/YYYY hh:mm:ss">{timesheet.start}</Moment></td>
                     <td><Moment format="DD/MM/YYYY hh:mm:ss">{timesheet.finish}</Moment></td>
                     <td><Moment format="DD/MM/YYYY">{this.state.otherinfo.created}</Moment></td>
-                    <td><Moment format="DD/MM/YYYY">{this.state.otherinfo.duedate}</Moment></td>
-                    <td>{this.state.totalvalue}</td>
+                    <td>{currencyFormatter(totalcost, {symbol: this.props.currency_symbol})}</td>
                 </tr>
             )
         })        
@@ -115,18 +111,25 @@ export default class InvoiceNew extends Component {
                         <thead>
                             <tr>
                                 <th style={{ textAlign: 'center' }}>Invoice Preview</th>
+                                
                             </tr>
                             <tr>
                                 <th>Client</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Created</th>
-                                <th>Due Date</th>
                                 <th>Total Value</th>
                             </tr>
                         </thead>
                         <tbody>
                             {timesheet_table_data}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{currencyFormatter(this.state.totalvalue, {symbol: this.props.currency_symbol})}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -137,6 +140,7 @@ export default class InvoiceNew extends Component {
                 <form style={{ width: '20%', display:'inline-block' }}>
                     <div className="card m-0">
                         <div className="card-body">
+                            <div><h5>Invoice Due Date: </h5><h6><Moment format="DD/MM/YYYY">{this.state.otherinfo.duedate}</Moment></h6></div>
                             <ClientField clients={ this.props.clients } onSelectClient={ (clientid) => { this.onSelectClient(clientid) }}/>
                             <TimeTable timesheets={ this.props.timesheets } onSendTimesheets={ (timesheets) => { this.onSendTimesheets(timesheets) }}/>
                             <div className="form-group">
