@@ -1,6 +1,7 @@
 import arweave from '../../arweave-config';
 import settings from '../../app-config';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 import { time } from 'faker';
 import { intToBuffer } from 'arweave/web/lib/merkle';
 const axios = require('axios')
@@ -314,4 +315,35 @@ export const currencyFormatter = (value, options) => {
         /\B(?=(\d{3})+(?!\d))/g,
         options.thousandsSeparator
     )}${options.decimalSeparator}${decimal.slice(0, options.significantDigits)}`
+}
+
+export async function saveEverVoice(client_id, evoice_tsheets, evoice_created, evoice_duedate, evoice_costph, evoice_totalvalue) {
+    console.log(client_id + " " + evoice_tsheets + " " + evoice_created + " " + evoice_duedate + " " + evoice_costph + " " + evoice_totalvalue);
+
+    var evoice = {
+        clientid: client_id,
+        tsheets: evoice_tsheets,
+        created: evoice_created,
+        duedate: evoice_duedate,
+        costph: evoice_costph,
+        totalvalue: evoice_totalvalue
+    }
+    debugger;
+    const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
+
+    let transaction = await arweave.createTransaction({
+        data: JSON.stringify(evoice)
+    }, jwk);
+
+    transaction.addTag('App', settings.APP_NAME);
+    transaction.addTag('Type', 'EverVoice-Invoice');
+
+    await arweave.transactions.sign(transaction, jwk);
+
+    //const response = await arweave.transactions.post(transaction);
+    //console.log(response.status);
+
+    /*if(response.status == 200) {
+        toast("Your Invoice has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
+    }*/
 }

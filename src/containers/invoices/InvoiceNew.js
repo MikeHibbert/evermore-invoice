@@ -3,7 +3,7 @@ import TimeTable from './TimeTable';
 import ClientField from './ClientField';
 import Moment from 'react-moment';
 import { toast } from 'react-toastify';
-import { getClientsGQL, currencyFormatter } from './helpers';
+import { getClientsGQL, currencyFormatter, saveEverVoice } from './helpers';
 import moment from 'moment';
 
 
@@ -16,6 +16,8 @@ export default class InvoiceNew extends Component {
         otherinfo: [],
         totalvalue: 0,
         costph:0,
+        unixcreated: 0,
+        unixduedate: 0
     }
 
     /*async componentDidMount() {
@@ -44,14 +46,17 @@ export default class InvoiceNew extends Component {
         const today1 = new Date();
         const today2 = moment(today1).add(30, "days");
 
-        this.setState({ otherinfo: {duedate: today2, created: creationdate} })
+        const unixcreated = Math.floor(creationdate.getTime()/1000);
+        const unixduedate = moment(today2).unix()
+
+        this.setState({ otherinfo: {duedate: today2, created: creationdate}, unixcreated: unixcreated, unixduedate: unixduedate, clientid: this.props.clients[0].txid })
     }
     
     totalValueCalculator(e) {
         let totalvalue = 0 
         if(e.target.value == "") {
             this.setState({totalvalue: 0})
-            return;
+            return; 
         }
         for(let i in this.state.timesheets) {
             const timesheet = this.state.timesheets[i];
@@ -68,6 +73,9 @@ export default class InvoiceNew extends Component {
         if(this.state.otherinfo.length < 1 ) {
             return false
         }
+        if(this.state.costph <= 0) {
+            return false
+        }
 
         return true;
     }
@@ -76,7 +84,7 @@ export default class InvoiceNew extends Component {
         event.preventDefault();
 
         if(this.validateNewInvoice() == true) {
-            
+            saveEverVoice(this.state.clientid, this.state.timesheets, this.state.unixcreated, this.state.unixduedate, this.state.costph, this.state.totalvalue);
             this.props.history.push('/invoices')
         } else {
             toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
