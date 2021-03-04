@@ -145,7 +145,7 @@ export default class InvoiceNew extends Component {
         }
         return (
             <div className="main-content">
-                <form style={{ width: '20%', display:'inline-block' }}>
+                <div style={{ width: '20%', display:'inline-block' }}>
                     <div className="card m-0">
                         <div className="card-body">
                             <div><h5>Invoice Due Date: </h5><h6><Moment format="DD/MM/YYYY">{this.state.otherinfo.duedate}</Moment></h6></div>
@@ -157,7 +157,7 @@ export default class InvoiceNew extends Component {
                             <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Form</button>
                         </div>
                     </div>
-                </form>
+                </div>
                 <div style={{ paddingLeft: 20 , display:'inline-table' }}>
                     {timesheet_table}
                 </div>

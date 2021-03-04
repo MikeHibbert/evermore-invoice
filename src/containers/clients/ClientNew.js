@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { saveEverClient } from './helpers'
-import { formatPhoneNumber, isPossiblePhoneNumber } from 'react-phone-number-input';
 import { isValid } from 'postcode';
 import { validate } from 'react-email-validator';
 import { toast } from 'react-toastify';
@@ -28,6 +27,13 @@ export default class ClientNew extends Component {
         this.setState(state);
     }
 
+    validatePhoneNumber() {
+        if(this.state.phone.length < 5 || this.state.phone.length > 15) {
+            return false;
+        }
+        return true;
+    }
+
     validateNewClient() {
         if(this.state.name.length <= 0) {
             return false;
@@ -38,13 +44,13 @@ export default class ClientNew extends Component {
         if(this.state.address.length <= 0) {
             return false;
         }
-        if(this.isValid(this.state.postcode) == false) {
+        if(isValid(this.state.postcode) == false) {
             return false;
         }
-        if(this.validate(this.state.email) == false) {
+        if(validate(this.state.email) == false) {
             return false;
         }
-        if(this.isPossiblePhoneNumber(this.state.phone) == false) {
+        if(this.validatePhoneNumber() == false) {
             return false;
         }
 
@@ -144,7 +150,7 @@ export default class ClientNew extends Component {
                                                     <div className="form-group row gutters">
                                                         <label className="col-sm-3 col-form-label"></label>
                                                         <div className="col-sm-9">
-                                                            <button type="button" id="submit" onClick={e => {this.onSubmit(e) }} name="submit" className="btn btn-primary pull-right">Submit Form</button>
+                                                            <button type="button" id="submit" onClick={(e) => {this.onSubmit(e) }} name="submit" className="btn btn-primary pull-right">Submit Form</button>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -37,7 +37,7 @@ export default class TimeTable extends Component {
         this.setState({dialog_open: open})
     }
 
-    openModal() {
+    openModal(e) {
         this.setIsOpen(true);
     }
  
@@ -107,7 +107,7 @@ export default class TimeTable extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <button className="form-control" onClick={() => { this.openModal() }}>Open Timesheet Selection</button>
+                    <input type="submit" className="form-control" onClick={(e) => { this.openModal(e) }} value="Open Timesheet Selection"/>
                 </div>
                 <Modal
                 isOpen={this.state.dialog_open}
