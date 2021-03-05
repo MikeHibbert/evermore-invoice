@@ -328,7 +328,7 @@ export async function saveEverVoice(client_id, evoice_tsheets, evoice_created, e
         costph: evoice_costph,
         totalvalue: evoice_totalvalue
     }
-    debugger;
+
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
 
     let transaction = await arweave.createTransaction({

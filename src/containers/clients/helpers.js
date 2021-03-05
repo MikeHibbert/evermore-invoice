@@ -15,7 +15,6 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
         phone: eclient_phone,
         website: eclient_website
     }
-    debugger;
 
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
 
@@ -28,6 +27,21 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
 
     await arweave.transactions.sign(transaction, jwk);
 
+    var localeclient = {
+        name: eclient_contact_name,
+        id: transaction.id
+    }
+    const clients = JSON.parse(localStorage.getItem('evoice_clients'))
+    debugger;
+    const type = typeof clients;
+    if(type == "object") {
+        var clients_list = [clients, localeclient]
+        localStorage.setItem('evoice_clients', JSON.stringify(clients_list))
+    } else {
+        localStorage.setItem('evoice_clients', JSON.stringify(localeclient))
+    }
+    
+    
     /*const response = await arweave.transactions.post(transaction);
     console.log(response.status);
 
