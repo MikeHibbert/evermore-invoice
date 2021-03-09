@@ -61,7 +61,30 @@ class App extends Component {
 
     if(isAuthenticated) {
       this.getUserData();
-    }    
+    }
+    
+    setInterval(() => {
+      const transactions = JSON.parse(localStorage.getItem('evoice_clients'))
+      const none_confirmed = [];
+      if(transactions) {
+        for(let i in transactions) {
+          const transaction = transactions[i];
+          arweave.transactions.getStatus(transaction.id).then(response => {
+            if(response.hasOwnProperty('confirmed') && response.status === 200) {
+              if(response.confirmed.number_of_confirmations > 4) {
+                this.addSuccessAlert(`${transaction.name} has successfully mined!`)
+              } else {
+                none_confirmed.push(transaction);
+              }
+            } else {
+              none_confirmed.push(transaction);
+            }
+          })
+        }
+
+        localStorage.setItem('evoice_clients', JSON.stringify(none_confirmed))
+      }
+    }, 5 * 60 * 1000)
   }
 
   componentDidUpdate(prevProps) {

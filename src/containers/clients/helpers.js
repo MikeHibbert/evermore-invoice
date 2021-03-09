@@ -24,15 +24,21 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
-
+ 
     await arweave.transactions.sign(transaction, jwk);
 
     var localeclient = {
-        name: eclient_contact_name,
-        id: transaction.id
+        name: eclient_name,
+        contact_name: eclient_contact_name,
+        address: eclient_address,
+        postcode: eclient_postcode,
+        email: eclient_email,
+        phone: eclient_phone,
+        website: eclient_website,
+        txid: transaction.id
     }
     const clients = JSON.parse(localStorage.getItem('evoice_clients'))
-    debugger;
+
     const type = typeof clients;
     if(type == "object") {
         var clients_list = [clients, localeclient]
@@ -42,15 +48,15 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
     }
     
     
-    /*const response = await arweave.transactions.post(transaction);
+    const response = await arweave.transactions.post(transaction);
     console.log(response.status);
 
     if(response.status == 200) {
-        toast("Your Timesheet has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
-    }*/
+        toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
+    }
 }
 
-export async function getClientsGQL() { 
+export async function getEverClientsGQL() { 
     
     const address = sessionStorage.getItem('AR_Wallet', null);
 
@@ -64,8 +70,8 @@ export async function getClientsGQL() {
                 owners: ["${address}"]
                 tags: [
                 {
-                    name: "App",
-                    values: ["Timelord"]
+                    name: "Type",
+                    values: ["EverVoice-Client"]
                 },
                 ]
                 after: "${cursor}"
@@ -100,23 +106,15 @@ export async function getClientsGQL() {
         });
         
         if(response.status == 200) {
+            
             const data = response.data.data;
 
             for(let i in data.transactions.edges) {
                 const item = data.transactions.edges[i].node;
 
                 const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
-                item['data'] = JSON.parse(result);
-
-                try {
-                    const client_data = await arweave.transactions.getData(item.data.clientid , {decode: true, string: true});
-                
-                    item['client_data'] = JSON.parse(client_data);
-                    clients.push(item)
-                } catch(e) {
-                    console.log(e);
-                }
-                
+                item['client_data'] = JSON.parse(result);  
+                clients.push(item)             
             }
 
             hasNextPage = data.transactions.pageInfo.hasNextPage;

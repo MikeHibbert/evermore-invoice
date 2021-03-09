@@ -23,7 +23,7 @@ class Clients extends Component {
     }
 
     componentDidMount() {
-      const clients = this.getPaginatedClients(0, 9);
+      const clients = this.getPaginatedClients(0, this.props.clients.length - 1);
 
       this.setState({clients: clients, active_page: 1})
     }
@@ -48,8 +48,9 @@ class Clients extends Component {
     }
 
     render() {
+
         const clients = this.state.clients.map((c) => {
-          return <Client key={c.txid} client={c} />;
+          return <Client key={c.client_data.txid} client={c} />;
         });
 
         return(

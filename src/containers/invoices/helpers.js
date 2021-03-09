@@ -216,7 +216,7 @@ export async function getClients() {
     return clients;
 }
 
-export async function getClientsGQL() {
+export async function getTimelordClientsGQL() {
     
     const address = sessionStorage.getItem('AR_Wallet', null);
 
@@ -272,17 +272,8 @@ export async function getClientsGQL() {
                 const item = data.transactions.edges[i].node;
 
                 const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
-                item['data'] = JSON.parse(result);
-
-                try {
-                    const client_data = await arweave.transactions.getData(item.data.clientid , {decode: true, string: true});
-                
-                    item['client_data'] = JSON.parse(client_data);
-                    clients.push(item)
-                } catch(e) {
-                    console.log(e);
-                }
-                
+                item['client_data'] = JSON.parse(result);
+                clients.push(item)
             }
 
             hasNextPage = data.transactions.pageInfo.hasNextPage;
@@ -340,10 +331,101 @@ export async function saveEverVoice(client_id, evoice_tsheets, evoice_created, e
 
     await arweave.transactions.sign(transaction, jwk);
 
+    var localevoice = {
+        clientid: client_id,
+        tsheets: evoice_tsheets,
+        created: evoice_created,
+        duedate: evoice_duedate,
+        costph: evoice_costph,
+        totalvalue: evoice_totalvalue
+    }
+    const evoices = JSON.parse(localStorage.getItem('evoice_invoices'))
+    debugger;
+    const type = typeof evoices;
+    if(type == "object") {
+        var evoices_list = [evoices, localevoice]
+        localStorage.setItem('evoice_invoices', JSON.stringify(evoices_list))
+    } else {
+        localStorage.setItem('evoice_invoices', JSON.stringify(localevoice))
+    }
+
     //const response = await arweave.transactions.post(transaction);
     //console.log(response.status);
 
     /*if(response.status == 200) {
         toast("Your Invoice has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
     }*/
+}
+
+export async function getEverVoicesGQL() {
+    
+    const address = sessionStorage.getItem('AR_Wallet', null);
+
+    let cursor = '';
+    let hasNextPage = true;
+    const invoices = [];
+
+    while(hasNextPage) {
+        const query = `{
+            transactions(
+                owners: ["${address}"]
+                tags: [
+                {
+                    name: "Type",
+                    values: ["Evervoice-Invoice"]
+                },
+                ]
+                after: "${cursor}"
+                first: 100    ) {
+                pageInfo {
+                    hasNextPage
+                }
+                edges {
+                    cursor
+                    node {
+                        owner {
+                            address
+                        }
+                        id
+                        tags {
+                            name
+                            value
+                        }
+                        block {
+                            timestamp
+                            height
+                        }
+                    }
+                }
+            }
+        }`;
+
+        const response = await axios.post("https://arweave.net/graphql", {
+            operationName: null,
+            query: query,
+            variables: {}
+        });
+        
+        if(response.status == 200) {
+            const data = response.data.data;
+
+            for(let i in data.transactions.edges) {
+                const item = data.transactions.edges[i].node;
+
+                const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
+                item['invoice_data'] = JSON.parse(result);
+                invoices.push(item)
+            }
+
+            hasNextPage = data.transactions.pageInfo.hasNextPage;
+
+            if(hasNextPage) {
+                cursor = data.transactions.edges[data.data.transactions.edges.length - 1].cursor;
+            }
+        } else {
+            hasNextPage = false;
+        }
+    }
+    console.log(invoices);
+    return invoices;
 }

@@ -3,7 +3,7 @@ import TimeTable from './TimeTable';
 import ClientField from './ClientField';
 import Moment from 'react-moment';
 import { toast } from 'react-toastify';
-import { getClientsGQL, currencyFormatter, saveEverVoice } from './helpers';
+import { getTimelordClientsGQL, currencyFormatter, saveEverVoice } from './helpers';
 import moment from 'moment';
 
 

@@ -6,11 +6,11 @@ const Client = function(props) {
 
     let last_invoice_date = "N/A";
 
-    const url = "/client/edit/" + props.client.txid;
+    const url = "/client/edit/" + props.client.client_data.txid;
     return(
         <tr>
-            <td>{props.client.name}</td>
-            <td>{props.client.address}</td>
+            <td>{props.client.client_data.name}</td>
+            <td>{props.client.client_data.address}</td>
             <td>{invoice_status}</td>
             <td>{last_invoice_date}</td>
             <td><Link className='btn btn-info bt-sm' to={url}>Edit</Link></td>

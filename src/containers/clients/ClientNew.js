@@ -86,6 +86,7 @@ export default class ClientNew extends Component {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="card">
                             <div className="card-body">
+                                <button className="form-control" style={{alignContent: "left", width: 200, marginBottom: 20}} onClick={() => { this.props.history.push('/clients') }}>Back to Client List</button>
                                 <div className="row justify-content-center gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-10 col-sm-12">
                                         <form>
@@ -150,7 +151,7 @@ export default class ClientNew extends Component {
                                                     <div className="form-group row gutters">
                                                         <label className="col-sm-3 col-form-label"></label>
                                                         <div className="col-sm-9">
-                                                            <button type="button" id="submit" onClick={(e) => {this.onSubmit(e) }} name="submit" className="btn btn-primary pull-right">Submit Form</button>
+                                                            <button type="button" id="submit" onClick={(e) => {this.onSubmit(e) }} name="submit" className="btn btn-primary pull-right">Create New Client</button>
                                                         </div>
                                                     </div>
                                                 </div>
