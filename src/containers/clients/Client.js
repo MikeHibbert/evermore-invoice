@@ -6,7 +6,7 @@ const Client = function(props) {
 
     let last_invoice_date = "N/A";
 
-    const url = "/client/edit/" + props.client.client_data.txid;
+    const url = "/client/edit/" + props.client.id;
     return(
         <tr>
             <td>{props.client.client_data.name}</td>

@@ -29,7 +29,7 @@ export default class ClientField extends Component {
         return (
             <div className="form-group">
                 <h5>Client: </h5>
-                <select className="form-control" value={this.state.selectedCompany} onChange={(e) => { this.OnSetCompany(e) }} value={this.state.selectedCompany}>
+                <select className="form-control" value={this.state.selectedClient} onChange={(e) => { this.OnSetCompany(e) }}>
                     {this.props.clients.map(clients => {
                         return <option key={clients.txid} value={clients.txid}>{clients.name}</option>
                     })}

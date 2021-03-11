@@ -1,4 +1,3 @@
-import { company } from 'faker';
 import React, { Component } from 'react';
 
 class CheckBox extends Component {
@@ -13,7 +12,7 @@ class CheckBox extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.checked != prevProps.checked) {
+        if(this.props.checked !== prevProps.checked) {
             this.setState({ isChecked: this.props.checked })
         }
     }

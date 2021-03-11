@@ -3,14 +3,13 @@ import TimeTable from './TimeTable';
 import ClientField from './ClientField';
 import Moment from 'react-moment';
 import { toast } from 'react-toastify';
-import { getTimelordClientsGQL, currencyFormatter, saveEverVoice } from './helpers';
+import { currencyFormatter, saveEverVoice } from './helpers';
 import moment from 'moment';
 
 
 
 export default class InvoiceNew extends Component {
     state = {
-        //clients_transactions: [],
         clientid: null,
         timesheets: [],
         otherinfo: [],
@@ -19,12 +18,6 @@ export default class InvoiceNew extends Component {
         unixcreated: 0,
         unixduedate: 0
     }
-
-    /*async componentDidMount() {
-        const that = this;
-        const clients_transactions = await getClientsGQL();
-        that.setState({clients_transactions: clients_transactions, selectedCompany: clients_transactions[0].id});
-    }*/
 
     constructor(props) {
         super(props)

@@ -3,8 +3,6 @@ import sendgrid from '@sendgrid/mail';
 import arweave from './arweave-config';
 import settings from './app-config';
 import {toast} from 'react-toastify';
-
-import faker from 'faker';
 import { getEverVoicesGQL, getTimelordClientsGQL } from './containers/invoices/helpers';
 import { getEverClientsGQL } from './containers/clients/helpers';
 

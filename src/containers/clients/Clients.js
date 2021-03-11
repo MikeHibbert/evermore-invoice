@@ -49,8 +49,8 @@ class Clients extends Component {
 
     render() {
 
-        const clients = this.state.clients.map((c) => {
-          return <Client key={c.client_data.txid} client={c} />;
+        const clients = this.props.clients.map((c) => {
+          return <Client key={c.id} client={c} />;
         });
 
         return(

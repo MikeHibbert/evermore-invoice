@@ -13,7 +13,7 @@ class Invoices extends Component {
         invoices_overdue_balance: 0,
         active_page: 1,
         invoices: [],
-
+        clients: []
     }
 
     constructor(props) {
@@ -49,8 +49,8 @@ class Invoices extends Component {
     }
 
     render() {
-      const invoices = this.state.invoices.map(invoice => {
-        return <InvoiceRow key={invoice.invoce_data.txid} invoice={invoice} />
+      const invoices = this.props.invoices.map(invoice => {
+        return <InvoiceRow key={invoice.txid} invoice={invoice} />
       })
 
       return(

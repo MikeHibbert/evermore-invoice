@@ -273,7 +273,10 @@ export async function getTimelordClientsGQL() {
 
                 const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
                 item['client_data'] = JSON.parse(result);
-                clients.push(item)
+
+                if(isClient(item)) {
+                    clients.push(item)
+                }
             }
 
             hasNextPage = data.transactions.pageInfo.hasNextPage;
@@ -287,6 +290,17 @@ export async function getTimelordClientsGQL() {
     }
     console.log(clients);
     return clients;
+}
+
+const isClient = (transaction) => {
+    const client_tags_found = transaction.tags.filter(tag => tag.name == 'Type' && tag.value != 'Timesheet');
+    for(let i in transaction) {
+        if(client_tags_found.length > 0 && transaction.client_data[i] !== null && transaction.client_data[i] != "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 const defaultOptions = {
@@ -372,7 +386,7 @@ export async function getEverVoicesGQL() {
                 tags: [
                 {
                     name: "Type",
-                    values: ["Evervoice-Invoice"]
+                    values: ["EverVoice-Invoice"]
                 },
                 ]
                 after: "${cursor}"
@@ -420,7 +434,7 @@ export async function getEverVoicesGQL() {
             hasNextPage = data.transactions.pageInfo.hasNextPage;
 
             if(hasNextPage) {
-                cursor = data.transactions.edges[data.data.transactions.edges.length - 1].cursor;
+                cursor = data.transactions.edges[data.transactions.edges.length - 1].cursor;
             }
         } else {
             hasNextPage = false;

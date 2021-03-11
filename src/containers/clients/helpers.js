@@ -120,7 +120,7 @@ export async function getEverClientsGQL() {
             hasNextPage = data.transactions.pageInfo.hasNextPage;
 
             if(hasNextPage) {
-                cursor = data.transactions.edges[data.data.transactions.edges.length - 1].cursor;
+                cursor = data.transactions.edges[data.transactions.edges.length - 1].cursor;
             }
         } else {
             hasNextPage = false;

@@ -1,5 +1,5 @@
 const settings = {
-    APP_TAG : 'evermore-invoice-v1.0',
+    APP_NAME : 'EverVoice',
     COMMISION_PERCENTAGE: 0.10
 };
 
