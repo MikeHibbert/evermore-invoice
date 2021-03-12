@@ -21,12 +21,14 @@ class Invoices extends Component {
 
       this.handlePageChange = this._handlePageChange.bind(this);
       this.getPaginatedInvoices.bind(this);
+      this.getPaginatedClients.bind(this);
     }
 
     componentDidMount() {
       const invoices = this.getPaginatedInvoices(0, 9);
+      const clients = this.getPaginatedClients(0, this.props.clients.length - 1);
 
-      this.setState({invoices: invoices, active_page: 1})
+      this.setState({invoices: invoices, clients: clients, active_page: 1})
     }
 
     _handlePageChange(active_page) {
@@ -34,8 +36,19 @@ class Invoices extends Component {
       const end = start + 9;
 
       const invoices = this.getPaginatedInvoices(start, end);
+      const clients = this.getPaginatedClients(start, end);
 
-      this.setState({invoices: invoices, active_page: active_page})
+      this.setState({invoices: invoices, clients: clients, active_page: active_page})
+    }
+
+    getPaginatedClients(start, end) {
+      
+      const clients = [];
+      for(let i=start; i <= end; i++) {
+        clients.push(this.props.clients[i]);
+      }
+
+      return clients;
     }
 
     getPaginatedInvoices(start, end) {

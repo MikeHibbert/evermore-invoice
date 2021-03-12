@@ -8,7 +8,7 @@ export default class ClientField extends Component {
     }
     
     componentDidMount() {
-        this.setState({selectedClient:this.props.clients[0].txid})
+        this.setState({selectedClient:this.props.clients[0].id})
     }
 
     onChange(event) {
@@ -31,7 +31,7 @@ export default class ClientField extends Component {
                 <h5>Client: </h5>
                 <select className="form-control" value={this.state.selectedClient} onChange={(e) => { this.OnSetCompany(e) }}>
                     {this.props.clients.map(clients => {
-                        return <option key={clients.txid} value={clients.txid}>{clients.name}</option>
+                        return <option key={clients.txid} value={clients.id}>{clients.client_data.name}</option>
                     })}
                 </select>
             </div>

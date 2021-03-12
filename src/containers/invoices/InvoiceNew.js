@@ -42,7 +42,7 @@ export default class InvoiceNew extends Component {
         const unixcreated = Math.floor(creationdate.getTime()/1000);
         const unixduedate = moment(today2).unix()
 
-        this.setState({ otherinfo: {duedate: today2, created: creationdate}, unixcreated: unixcreated, unixduedate: unixduedate, clientid: this.props.clients[0].txid })
+        this.setState({ otherinfo: {duedate: today2, created: creationdate}, unixcreated: unixcreated, unixduedate: unixduedate, clientid: this.props.clients[0].id })
     }
     
     totalValueCalculator(e) {

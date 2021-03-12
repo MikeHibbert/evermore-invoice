@@ -295,12 +295,11 @@ export async function getTimelordClientsGQL() {
 const isClient = (transaction) => {
     const client_tags_found = transaction.tags.filter(tag => tag.name == 'Type' && tag.value != 'Timesheet');
     for(let i in transaction) {
-        if(client_tags_found.length > 0 && transaction.client_data[i] !== null && transaction.client_data[i] != "") {
+        if(client_tags_found.length > 0) {
             return true;
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 const defaultOptions = {
@@ -354,7 +353,7 @@ export async function saveEverVoice(client_id, evoice_tsheets, evoice_created, e
         totalvalue: evoice_totalvalue
     }
     const evoices = JSON.parse(localStorage.getItem('evoice_invoices'))
-    debugger;
+    
     const type = typeof evoices;
     if(type == "object") {
         var evoices_list = [evoices, localevoice]
@@ -363,12 +362,12 @@ export async function saveEverVoice(client_id, evoice_tsheets, evoice_created, e
         localStorage.setItem('evoice_invoices', JSON.stringify(localevoice))
     }
 
-    //const response = await arweave.transactions.post(transaction);
-    //console.log(response.status);
+    const response = await arweave.transactions.post(transaction);
+    console.log(response.status);
 
-    /*if(response.status == 200) {
+    if(response.status == 200) {
         toast("Your Invoice has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
-    }*/
+    }
 }
 
 export async function getEverVoicesGQL() {
