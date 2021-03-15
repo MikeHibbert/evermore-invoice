@@ -17,8 +17,9 @@ import Clients from './containers/clients/Clients';
 import ClientEdit from './containers/clients/ClientEdit';
 import Settings from './containers/settings/Settings';
 import Reports from './containers/reports/Reports';
-import { getClients, getInvoices } from './helpers';
+import { getClients, getFaqs, getInvoices } from './helpers';
 import ClientNew from './containers/clients/ClientNew';
+import Faqs from './containers/faq/Faqs Page';
 
 
 class App extends Component {
@@ -28,7 +29,8 @@ class App extends Component {
     currency_symbol: '$',
     loading: "",
     clients: [],
-    invoices: []
+    invoices: [],
+    faqs: []
   }
 
   constructor(props) {
@@ -107,7 +109,10 @@ class App extends Component {
   
         this.setLoaded();
       });
-    });    
+    });
+    const faqs = getFaqs(this.state.wallet_address).then(() => {
+      that.setState({faqs: faqs});
+    })    
   }
 
   toggleContent() {
@@ -253,6 +258,9 @@ class App extends Component {
       />} />,
       <Route key='settings' path="/settings" exact component={() => <Settings wallet_address={this.state.wallet_address} jwk={this.state.jwk} 
                                                                         addSuccessAlert={this.addSuccessAlert} />} />,
+      <Route key='faq' path="/faq" exact component={() => <Faqs
+        faqs={this.state.faqs}
+      />} />,
       <Route key='logout' path="/logout" exact component={() => <Logout onLogout={this.disconnectWallet.bind(this)} addSuccessAlert={this.addSuccessAlert}
                                                                      explandContentArea={() => this.explandContentArea} />} />
     ];

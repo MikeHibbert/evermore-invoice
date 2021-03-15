@@ -70,13 +70,19 @@ class MainNav extends Component {
                 <i className="nav-icon icon-users"></i>
                 <span className="nav-item">Clients</span>
               </Link>
-
             </li>
             <li className={this.getLiClass("/reports")}>
               <Link className={this.getLinkClass("/reports")} to="/reports" 
                 onClick={this.closeMobile.bind(this)} >
                 <i className="nav-icon icon-magnifying-glass"></i>
                 <span className="nav-item">Reports</span>
+              </Link>
+            </li>
+            <li className={this.getLiClass("/faq")}>
+              <Link className={this.getLinkClass("/faq")} to="/faq"
+                onClick={this.closeMobile.bind(this)}>
+                <i className="nav-icon icon-lightbulb"></i>
+                <span className="nav-item">FAQ</span>
               </Link>
             </li>
             <li className={this.getLiClass("/settings")}>
