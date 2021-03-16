@@ -110,7 +110,7 @@ class App extends Component {
         this.setLoaded();
       });
     });
-    const faqs = getFaqs(this.state.wallet_address).then(() => {
+    getFaqs(this.state.wallet_address).then((faqs) => {
       that.setState({faqs: faqs});
     })    
   }
@@ -260,6 +260,7 @@ class App extends Component {
                                                                         addSuccessAlert={this.addSuccessAlert} />} />,
       <Route key='faq' path="/faq" exact component={() => <Faqs
         faqs={this.state.faqs}
+        wallet_address={this.state.wallet_address}
       />} />,
       <Route key='logout' path="/logout" exact component={() => <Logout onLogout={this.disconnectWallet.bind(this)} addSuccessAlert={this.addSuccessAlert}
                                                                      explandContentArea={() => this.explandContentArea} />} />

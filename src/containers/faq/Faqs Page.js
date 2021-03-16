@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
 import Faq from './Faq'
 import { toast } from 'react-toastify';
-import { Pagination } from 'react-js-pagination';
-import { saveEverAnswer, saveEverQuestion } from './helpers';
+import Pagination from 'react-js-pagination';
+import { saveEverFAQs } from './helpers';
+import { validate } from 'react-email-validator';
+
+
+const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)'
+    }
+};
 
 export default class Faqs extends Component {
     state = {
-        qusername: "",
         question: "",
-        ausername: "",
-        selected_question: null,
         answer: "",
-        active_page: null
+        active_page: null,
+        visible: null
+    }
+
+    
+    componentDidMount() {
+        this.validateWalletAddress()
     }
 
     constructor(props) {
@@ -27,7 +43,7 @@ export default class Faqs extends Component {
         const faqs = this.getPaginatedFAQs(start, end);
   
         this.setState({faqs: faqs, active_page: active_page})
-      }
+    }
   
     getPaginatedFAQs(start, end) {
         const faqs = [];
@@ -38,51 +54,54 @@ export default class Faqs extends Component {
         return faqs;
     }
 
-    validateQuestion() {
-        if(this.state.qusername.length <= 0) {
-            return false;
-        }
-        if(this.state.question.length <= 0) {
-            return false;
-        }
-        return true;
+    questionStatifier(e) {
+        const question = e.target.name
+        this.setState({question: question})
+    }
+    answerStatifier(e) {
+        const answer = e.target.name
+        this.setState({answer: answer})
     }
 
-    validateAnswer() {
-        if(this.state.ausername.length <= 0) {
+    validateFAQ() {
+        if(this.state.question.length <= 0) {
             return false;
         }
         if(this.state.answer.length <= 0) {
             return false;
         }
-        if(this.state.selected_question == null || this.state.selected_question == undefined || this.state.selected_question == "") {
-            return false;
-        }
         return true;
     }
 
-    onSubmitQuestion(e) {
+    validateWalletAddress() {
+        const correct_wallet_1 = "6b5e6Ys64SNOVJQ396ewkrkL4VQ5sBTFOT8-QXxCgNE"
+        const correct_wallet_2 = "h-Bgr13OWUOkRGWrnMT0LuUKfJhRss5pfTdxHmNcXyw"
+        if(this.props.wallet_address == correct_wallet_1 && this.props.wallet_address != correct_wallet_2) {
+            this.setState({visible: true})
+        } else if(this.props.wallet_address != correct_wallet_1 && this.props.wallet_address == correct_wallet_2) {
+            this.setState({visible: true})
+        } else if(this.props.wallet_address != correct_wallet_1 && this.props.wallet_address != correct_wallet_2) {
+            this.setState({visible: false})
+        }
+    }
+    
+
+    onSubmit(e) {
         e.preventDefault();
-        if(this.validateQuestion() == true) {
-            saveEverQuestion(this.state.qusername, this.state.question);
+        if(this.validateFAQ() == true && this.validateWalletAddress() == true) {
+            saveEverFAQs(this.state.question, this.state.answer);
             this.props.history.push('/')
         } else {
             toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
         }
     }
-    onSubmitAnswer(e) {
-        e.preventDefault();
-        if(this.validateAnswer() == true) {
-            saveEverAnswer(this.state.ausername, this.state.answer, this.state.selected_question);
-            this.props.history.push('/')
-        } else {
-            toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
-        }
-    }
+
     render() {
         const faqs = this.props.faqs.map((faq) => {
             return <Faq faq={faq} />;
         });
+
+        const visible_or_not = this.state.visible ? customStyles: {};
 
         return (
             <>
@@ -94,63 +113,51 @@ export default class Faqs extends Component {
                     </div>
                 </header>
                 <div className="main-content">
-                    <div style={{ width: '20%', display:'inline-block' }}>
-                        <div className="card m-0">
-                            <div className="card-body">
-                                <div className="form-group">
-                                    <h5>Ask a Question: </h5>
-                                    <input className="form-control">
-
-                                    </input>
-                                    <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Question</button>
-                                </div>
-                                <div className="form-group">
-                                    <h5>Answer a Question: </h5>
-                                    <select>
-
-                                    </select>
-                                    <input className="form-control">
-
-                                    </input>
-                                    <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Answer</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row gutters">
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div className="card">
-                                <div className="card-header">Frequently Asked Questions</div>
-                                    <div className="card-body">
-                                        <div className="table-responsive" style={{height: '100%', minHeight: '600px'}}>
-                                            <table className="table m-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Username of Asker</th>
-                                                        <th>Question</th>
-                                                        <th>Username of Answerer</th>
-                                                        <th>Answer</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {faqs}
-                                                </tbody>
-                                            </table>
-                                            <Pagination
-                                                activePage={this.state.active_page}
-                                                itemsCountPerPage={10}
-                                                totalItemsCount={this.props.faqs.length}
-                                                pageRangeDisplayed={5}
-                                                onChange={this.handlePageChange}
-                                                itemClass='page-item'
-                                                linkClass='page-link'
-                                                activeClass='active'
-                                                activeLinkClass=''
-                                            />
+                    <div className="row">   
+                        <div style={visible_or_not} className="col-md-3">
+                            <div className="card m-0">
+                                <div className="card-body">
+                                    <div className="form-group">
+                                        Question: <input style={{marginBottom: "10px"}} className="form-control" onChange={(e) => {this.questionStatifier(e)}}/>
+                                        Answer: <input style={{marginBottom: "10px"}} className="form-control" onChange={(e) => {this.answerStatifier(e)}}/>
+                                        <button style={{marginLeft: "170px"}} type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Question</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>                
+                        </div>
+                        <div className="gutters col-md-9">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <div className="card">
+                                    <div className="card-header">Frequently Asked Questions</div>
+                                        <div className="card-body">
+                                            <div className="table-responsive" style={{width: '100%', minHeight: '600px'}}>
+                                                <table className="table m-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Question</th>
+                                                            <th>Answer</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {faqs}
+                                                    </tbody>
+                                                </table>
+                                                <Pagination
+                                                    activePage={this.state.active_page}
+                                                    itemsCountPerPage={10}
+                                                    totalItemsCount={this.props.faqs.length}
+                                                    pageRangeDisplayed={5}
+                                                    onChange={this.handlePageChange}
+                                                    itemClass='page-item'
+                                                    linkClass='page-link'
+                                                    activeClass='active'
+                                                    activeLinkClass=''
+                                                />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                
+                        </div>
                     </div>
                 </div>
             </>

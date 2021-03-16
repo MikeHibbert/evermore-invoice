@@ -5,7 +5,7 @@ import settings from './app-config';
 import {toast} from 'react-toastify';
 import { getEverVoicesGQL, getTimelordClientsGQL } from './containers/invoices/helpers';
 import { getEverClientsGQL } from './containers/clients/helpers';
-import { getEverAnswersGQL, getEverQuestionsGQL } from './containers/faq/helpers';
+import { getEverFAQGQL } from './containers/faq/helpers';
 
 const successMessage = (message) => {
   toast(message, { type: toast.TYPE.SUCCESS }); 
@@ -73,14 +73,10 @@ export const getInvoices = async (wallet_address, clients) => {
 }
 
 export const getFaqs = async (wallet_address) => {
-  const faq_questions = await getEverQuestionsGQL()
-  const faq_answers = await getEverAnswersGQL()
+  const imported_faqs = await getEverFAQGQL()
   const faqs = []
-  for(let i in faq_questions) {
-    faqs.push(faq_questions[i])
-  }
-  for(let i in faq_answers) {
-    faqs.push(faq_answers[i])
+  for(let i in imported_faqs) {
+    faqs.push(imported_faqs[i])
   }
   return faqs
 }
