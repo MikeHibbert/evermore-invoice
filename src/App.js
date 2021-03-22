@@ -261,6 +261,7 @@ class App extends Component {
       <Route key='faq' path="/faq" exact component={() => <Faqs
         faqs={this.state.faqs}
         wallet_address={this.state.wallet_address}
+        history={this.props.history}
       />} />,
       <Route key='logout' path="/logout" exact component={() => <Logout onLogout={this.disconnectWallet.bind(this)} addSuccessAlert={this.addSuccessAlert}
                                                                      explandContentArea={() => this.explandContentArea} />} />

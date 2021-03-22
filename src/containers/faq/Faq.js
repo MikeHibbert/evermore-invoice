@@ -1,11 +1,14 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card'
 
 const Faq = function(props) {
     return(
-        <tr>
-            <td>{props.faq.faq_data.question}</td>
-            <td>{props.faq.faq_data.answer}</td>
-        </tr>
+        <Card>
+            <Card.Body>
+                <Card.Text>{props.faq.faq_data.question}</Card.Text>
+                <Card.Text>{props.faq.faq_data.answer}</Card.Text>
+            </Card.Body>
+        </Card>
     )
 }
 

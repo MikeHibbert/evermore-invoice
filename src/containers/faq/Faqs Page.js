@@ -3,6 +3,7 @@ import Faq from './Faq'
 import { toast } from 'react-toastify';
 import Pagination from 'react-js-pagination';
 import { saveEverFAQs } from './helpers';
+import CardColumns from 'react-bootstrap/CardColumns'
 import { validate } from 'react-email-validator';
 
 
@@ -55,11 +56,11 @@ export default class Faqs extends Component {
     }
 
     questionStatifier(e) {
-        const question = e.target.name
+        const question = e.target.value
         this.setState({question: question})
     }
     answerStatifier(e) {
-        const answer = e.target.name
+        const answer = e.target.value
         this.setState({answer: answer})
     }
 
@@ -78,10 +79,13 @@ export default class Faqs extends Component {
         const correct_wallet_2 = "h-Bgr13OWUOkRGWrnMT0LuUKfJhRss5pfTdxHmNcXyw"
         if(this.props.wallet_address == correct_wallet_1 && this.props.wallet_address != correct_wallet_2) {
             this.setState({visible: true})
+            return true;
         } else if(this.props.wallet_address != correct_wallet_1 && this.props.wallet_address == correct_wallet_2) {
             this.setState({visible: true})
+            return true;
         } else if(this.props.wallet_address != correct_wallet_1 && this.props.wallet_address != correct_wallet_2) {
             this.setState({visible: false})
+            return false;
         }
     }
     
@@ -131,17 +135,9 @@ export default class Faqs extends Component {
                                     <div className="card-header">Frequently Asked Questions</div>
                                         <div className="card-body">
                                             <div className="table-responsive" style={{width: '100%', minHeight: '600px'}}>
-                                                <table className="table m-0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Question</th>
-                                                            <th>Answer</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {faqs}
-                                                    </tbody>
-                                                </table>
+                                                <CardColumns>
+                                                    {faqs}
+                                                </CardColumns>
                                                 <Pagination
                                                     activePage={this.state.active_page}
                                                     itemsCountPerPage={10}

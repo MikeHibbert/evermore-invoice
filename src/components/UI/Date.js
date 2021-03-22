@@ -1,4 +1,6 @@
 import React from 'react';
+import Moment from 'react-moment';
+
 
 function englishDate(date) {
     var day = date.getDate();
@@ -24,15 +26,12 @@ function americanDate(date) {
     return month + '/' + day + '/' + year;
 }
 
-const Date = function(props) {
+const DateElement = function(props) {
     const date_format = localStorage.getItem('evermore-invoice-date-format', null);
 
-    let date = americanDate(props.date);
-    if(date_format === 'dd/mm/yyyy') {
-        date = englishDate(props.date);
-    }
+    const date = <Moment date={props.date} format={date_format}/>
 
     return date;
 }
 
-export default Date;
+export default DateElement;

@@ -19,7 +19,7 @@ export async function saveEverFAQs(question, answer) {
     }, jwk);
 
     transaction.addTag('App', settings.APP_NAME);
-    transaction.addTag('Type', 'EverVoice-FAQ-Q');
+    transaction.addTag('Type', 'EverVoice-FAQ');
  
     await arweave.transactions.sign(transaction, jwk);
 
@@ -39,12 +39,12 @@ export async function saveEverFAQs(question, answer) {
     }
     
     
-    /*const response = await arweave.transactions.post(transaction);
+    const response = await arweave.transactions.post(transaction);
     console.log(response.status);
 
     if(response.status == 200) {
-        toast("Your Question has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
-    }*/
+        toast("FAQ Successfully Added, It Will Be Mined Shortly!", { type: toast.TYPE.SUCCESS });  
+    }
 }
 
 export async function getEverFAQGQL() { 
@@ -58,7 +58,6 @@ export async function getEverFAQGQL() {
     while(hasNextPage) {
         const query = `{
             transactions(
-                owners: ["${address}"]
                 tags: [
                 {
                     name: "Type",

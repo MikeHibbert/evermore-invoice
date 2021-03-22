@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import arweave from '../../arweave-config';
 import {saveLogo, getLogos, successMessage, errorMessage} from '../../helpers';
+import magicDownload from './helpers';
 
 class Settings extends Component {
     state = {
@@ -10,7 +11,7 @@ class Settings extends Component {
         email_from: '',
         currency_type: 'Dollars',
         currency_symbol: '$',
-        date_format: 'mm/dd/yyyy',
+        date_format: 'DD/MM/YYYY',
         invoice_note: '',
         tax_code: '',
         tax_rate: 0.0,
@@ -79,7 +80,7 @@ class Settings extends Component {
 
     OnExport() {
         const settings = JSON.stringify(this.state);
-
+        magicDownload(settings, "EverVoice_UserSettings.json", "application/json")
         console.log(settings);
     }
 
@@ -110,7 +111,6 @@ class Settings extends Component {
 
             const reader = new FileReader();
             reader.onload = function() {
-                debugger;
                 const text = reader.result;
 
                 saveLogo(text);                
@@ -232,8 +232,8 @@ class Settings extends Component {
                                                             name="date_format"
                                                             onChange={(e) => {this.OnChange(e)}} 
                                                             className="form-control">
-                                                            <option value="mm/dd/yyyy" >mm/dd/yyyy</option>
-                                                            <option value="dd/mm/yyyy" >dd/mm/yyyy</option>
+                                                            <option value="MM/DD/YYYY" >mm/dd/yyyy</option>
+                                                            <option value="DD/MM/YYYY" >dd/mm/yyyy</option>
                                                         </select>
                                                     </div>  
                                                     
