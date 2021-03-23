@@ -22,7 +22,6 @@ export default class Faqs extends Component {
         question: "",
         answer: "",
         active_page: null,
-        visible: null
     }
 
     
