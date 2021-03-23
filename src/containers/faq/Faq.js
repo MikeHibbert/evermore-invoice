@@ -5,8 +5,8 @@ const Faq = function(props) {
     return(
         <Card>
             <Card.Body>
-                <Card.Text>{props.faq.faq_data.question}</Card.Text>
-                <Card.Text>{props.faq.faq_data.answer}</Card.Text>
+                <Card.Text>Q: {props.faq.faq_data.question}</Card.Text><br/>
+                <Card.Text>A: {props.faq.faq_data.answer}</Card.Text>
             </Card.Body>
         </Card>
     )
