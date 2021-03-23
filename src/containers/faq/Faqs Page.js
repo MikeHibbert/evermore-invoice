@@ -8,13 +8,12 @@ import { validate } from 'react-email-validator';
 
 
 const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        float: 'left',
     }
 };
 
@@ -28,7 +27,7 @@ export default class Faqs extends Component {
 
     
     componentDidMount() {
-        this.validateWalletAddress()
+        
     }
 
     constructor(props) {
@@ -77,14 +76,12 @@ export default class Faqs extends Component {
     validateWalletAddress() {
         const correct_wallet_1 = "6b5e6Ys64SNOVJQ396ewkrkL4VQ5sBTFOT8-QXxCgNE"
         const correct_wallet_2 = "h-Bgr13OWUOkRGWrnMT0LuUKfJhRss5pfTdxHmNcXyw"
-        if(this.props.wallet_address == correct_wallet_1 && this.props.wallet_address != correct_wallet_2) {
-            this.setState({visible: true})
+
+        if(this.props.wallet_address == correct_wallet_1 || this.props.wallet_address == correct_wallet_2) {
+            
             return true;
-        } else if(this.props.wallet_address != correct_wallet_1 && this.props.wallet_address == correct_wallet_2) {
-            this.setState({visible: true})
-            return true;
-        } else if(this.props.wallet_address != correct_wallet_1 && this.props.wallet_address != correct_wallet_2) {
-            this.setState({visible: false})
+        } else {
+           
             return false;
         }
     }
@@ -105,7 +102,7 @@ export default class Faqs extends Component {
             return <Faq faq={faq} />;
         });
 
-        const visible_or_not = this.state.visible ? customStyles: {};
+        const visible_or_not = this.validateWalletAddress() ? {} : customStyles.content;
 
         return (
             <>
