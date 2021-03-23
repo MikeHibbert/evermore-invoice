@@ -5671,4 +5671,8 @@ label {
 .loaded {
   display: none;
 }
+
+.card-columns {
+  column-count: 4 !important;
+}
 /*# sourceMappingURL=main.css.map */
