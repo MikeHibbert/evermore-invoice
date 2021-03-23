@@ -94,10 +94,11 @@ export default class Faqs extends Component {
 
     render() {
         const faqs = this.props.faqs.map((faq) => {
-            return <Faq faq={faq} />;
+            return <Faq faq={faq} props={this.props}/>;
         });
 
         const visible_or_not = this.validateWalletAddress() ? {} : customStyles.content;
+        const formClasses = this.validateWalletAddress() ? "gutters col-md-9" : "gutters col-md-12";
 
         return (
             <>
@@ -121,10 +122,10 @@ export default class Faqs extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="gutters col-md-9">
+                        <div className={formClasses}>
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                 <div className="card">
-                                    <div className="card-header">Frequently Asked Questions</div>
+                                    <div className="card-header">Frequently Asked Questions (click cards to see answers)</div>
                                         <div className="card-body">
                                             <div className="table-responsive" style={{width: '100%', minHeight: '600px'}}>
                                                 <CardColumns>
