@@ -138,24 +138,37 @@ export default class InvoiceNew extends Component {
             </div>;              
         }
         return (
-            <div className="main-content">
-                <div style={{ width: '20%', display:'inline-block' }}>
-                    <div className="card m-0">
-                        <div className="card-body">
-                            <div><h5>Invoice Due Date: </h5><h6><Moment format="DD/MM/YYYY">{this.state.otherinfo.duedate}</Moment></h6></div>
-                            <ClientField clients={ this.props.clients } onSelectClient={ (clientid) => { this.onSelectClient(clientid) }}/>
-                            <TimeTable timesheets={ this.props.timesheets } onSendTimesheets={ (timesheets) => { this.onSendTimesheets(timesheets) }}/>
-                            <div className="form-group">
-                            Cost Per Hour <input className="form-control" type="text" onChange={ (e) => {this.totalValueCalculator(e) }}/>
+            <>
+                <header className="page-header">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div className="page-title">
+                                    <h3>&nbsp;</h3>
+                                </div>
                             </div>
-                            <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Form</button>
                         </div>
                     </div>
-                </div>
-                <div style={{ paddingLeft: 20 , display:'inline-table' }}>
-                    {timesheet_table}
-                </div>
-            </div>
+                </header>
+                    <div className="main-content">
+                        <div style={{ width: '20%', display:'inline-block' }}>
+                            <div className="card m-0">
+                                <div className="card-body">
+                                    <div><h5>Invoice Due Date: </h5><h6><Moment format="DD/MM/YYYY">{this.state.otherinfo.duedate}</Moment></h6></div>
+                                    <ClientField clients={ this.props.clients } onSelectClient={ (clientid) => { this.onSelectClient(clientid) }}/>
+                                    <TimeTable timesheets={ this.props.timesheets } onSendTimesheets={ (timesheets) => { this.onSendTimesheets(timesheets) }}/>
+                                    <div className="form-group">
+                                    Cost Per Hour <input className="form-control" type="text" onChange={ (e) => {this.totalValueCalculator(e) }}/>
+                                    </div>
+                                    <button type="button" id="submit" name="submit" className="btn btn-primary float-right" onClick={ (event) => { this.onSubmit(event) }}>Submit Form</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style={{ paddingLeft: 20 , display:'inline-table' }}>
+                            {timesheet_table}
+                        </div>
+                    </div>
+            </>
         );
     }
 }

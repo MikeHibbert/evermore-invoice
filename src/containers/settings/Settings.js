@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import arweave from '../../arweave-config';
 import {saveLogo, getLogos, successMessage, errorMessage} from '../../helpers';
-import magicDownload from './helpers';
+import { magicDownload } from './helpers';
 
 class Settings extends Component {
     state = {
@@ -84,13 +84,23 @@ class Settings extends Component {
         console.log(settings);
     }
 
-    OnImport() {
-        const state = '';
-        const settings = JSON.parse(state);
+    OnImport(e) {
+        const that = this;
 
-        this.setState(settings);
+        const reader = new FileReader();
+        reader.onload = function() {
+            const text = reader.result
+            const settings = JSON.parse(text);
+            console.log(settings)        
+            that.setState({ settings });
+        };
 
-        this.OnSave();
+        //reader.readAsText(wallet_address_files[0]);
+
+        
+        /*this.setState(settings);
+
+        this.OnSave();*/
     }
 
     OnChange(event) {
@@ -293,13 +303,12 @@ class Settings extends Component {
                                                 <div className="form-block-body">
                                                     <button type="button" id="submit" 
                                                             onClick={this.OnSave.bind(this)} name="submit" 
-                                                            className="btn btn-primary ">Update settings</button>  
+                                                            className="btn btn-primary ">Update settings</button>
 
-                                                    <button type="button" id="submit" 
-                                                            style={{float: "right"}}
-                                                            onClick={this.OnImport.bind(this)} name="submit" 
-                                                            className="btn btn-success ">Import settings</button> 
-
+                                                    <div className="custom-file" style={{ width: "200px", float: "right", height: "36px" }}>
+                                                        <input type="file" onChange={(e) => {this.OnImport(e)}} name="keyfile" className="custom-file-input"/>
+                                                        <label className="custom-file-label custom-file-label-primary">Insert Settings File</label>
+                                                    </div>
                                                     <button type="button" id="submit" 
                                                             style={{float: "right", marginRight: '5px'}}
                                                             onClick={this.OnExport.bind(this)} name="submit" 
