@@ -89,18 +89,16 @@ class Settings extends Component {
 
         const reader = new FileReader();
         reader.onload = function() {
-            const text = reader.result
-            const settings = JSON.parse(text);
+            //const text = reader.result
+            const settings = JSON.parse(reader.result);
             console.log(settings)        
-            that.setState({ settings });
+            that.setState({ state: settings });
         };
 
-        //reader.readAsText(wallet_address_files[0]);
+        reader.readAsText(e.target.files[0]);
 
-        
-        /*this.setState(settings);
-
-        this.OnSave();*/
+        console.log(this.state) 
+        this.OnSave();
     }
 
     OnChange(event) {
