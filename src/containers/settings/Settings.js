@@ -85,20 +85,22 @@ class Settings extends Component {
     }
 
     OnImport(e) {
+        e.preventDefault();
         const that = this;
 
         const reader = new FileReader();
         reader.onload = function() {
             //const text = reader.result
+            debugger;
             const settings = JSON.parse(reader.result);
+            
             console.log(settings)        
-            that.setState({ state: settings });
+            that.setState(settings);
+            that.OnSave();
         };
 
         reader.readAsText(e.target.files[0]);
-
-        console.log(this.state) 
-        this.OnSave();
+        
     }
 
     OnChange(event) {
