@@ -39,11 +39,11 @@ class Clients extends Component {
 
     getPaginatedClients(start, end) {
       
-      const clients = [];
+      var clients = [];
       for(let i=start; i <= end; i++) {
         clients.push(this.props.clients[i]);
       }
-
+      
       return clients;
     }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import arweave from 'arweave';
 import { toast } from 'react-toastify';
 import { isValid } from 'postcode';
 import { validate } from 'react-email-validator';
@@ -7,6 +8,7 @@ import { updateEverClient } from './helpers';
 
 export default class ClientEdit extends Component {
     state = {
+        clients: [],
         name: "",
         contact_name: "",
         address: "",
@@ -15,8 +17,17 @@ export default class ClientEdit extends Component {
         phone: "",
         website: ""
     }
+
     constructor(props) {
         super(props);
+    }
+
+    selectedClient() {
+        const web_sections = this.props.location.pathname.split("/")
+        const txid = web_sections[4]
+        var data = null
+        const selected_client = JSON.parse(data)
+        this.setState(selected_client);
     }
 
     handleChange(e) {
@@ -62,9 +73,9 @@ export default class ClientEdit extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        const txid = this.props.location.pathname.split("/")[2]
+        
         if(this.validateNewClient() == true) {
-            updateEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website, txid);
+            updateEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website);
             this.props.history.push('/clients')
         } else {
             toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });

@@ -212,7 +212,6 @@ export async function getClients() {
         });
     }
 
-    console.log(clients);
     return clients;
 }
 
@@ -288,7 +287,7 @@ export async function getTimelordClientsGQL() {
             hasNextPage = false;
         }
     }
-    console.log(clients);
+
     return clients;
 }
 
@@ -439,6 +438,6 @@ export async function getEverVoicesGQL() {
             hasNextPage = false;
         }
     }
-    console.log(invoices);
+
     return invoices;
 }

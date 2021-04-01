@@ -116,6 +116,6 @@ export async function getEverFAQGQL() {
             hasNextPage = false;
         }
     }
-    console.log(faqs);
+
     return faqs;
 }

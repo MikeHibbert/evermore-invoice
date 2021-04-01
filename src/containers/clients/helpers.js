@@ -81,6 +81,15 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
+
+    await arweave.transactions.sign(transaction, jwk);    
+    
+    const response = await arweave.transactions.post(transaction);
+    console.log(response.status);
+
+    if(response.status == 200) {
+        toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
+    }
 }
 
 export async function getEverClientsGQL() { 
@@ -153,6 +162,6 @@ export async function getEverClientsGQL() {
             hasNextPage = false;
         }
     }
-    console.log(clients);
+
     return clients;
 }
