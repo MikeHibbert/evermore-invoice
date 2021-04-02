@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import arweave from 'arweave';
+import indexOf from 'index-of-x';
 import { toast } from 'react-toastify';
 import { isValid } from 'postcode';
 import { validate } from 'react-email-validator';
@@ -22,12 +23,17 @@ export default class ClientEdit extends Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.selectedClient()
+    }
+
     selectedClient() {
+        this.setState({ clients: this.props.clients })
         const web_sections = this.props.location.pathname.split("/")
         const txid = web_sections[4]
-        var data = null
-        const selected_client = JSON.parse(data)
-        this.setState(selected_client);
+        const selected_client = indexOf(this.state.clients, txid, 0, 'SameValue')
+        console.log(selected_client)
+        this.setState(this.state.clients[selected_client]);
     }
 
     handleChange(e) {

@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "faker": "^4.1.0",
+    "index-of-x": "^3.1.2",
     "moment": "^2.29.1",
     "pdfmake": "git+https://github.com/bpampuch/pdfmake.git",
     "postcode": "^5.1.0",
