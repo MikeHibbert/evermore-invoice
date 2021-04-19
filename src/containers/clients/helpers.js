@@ -6,6 +6,8 @@ const axios = require('axios')
 export async function saveEverClient(eclient_name, eclient_contact_name, eclient_address, eclient_postcode, eclient_email, eclient_phone, eclient_website) {
     console.log(eclient_name + " " + eclient_contact_name + " " + eclient_address + " " + eclient_postcode + " " + eclient_email + " " + eclient_phone + " " + eclient_website);
 
+    var version_number = 1
+
     var eclient = {
         name: eclient_name,
         contact_name: eclient_contact_name,
@@ -14,7 +16,7 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
         email: eclient_email,
         phone: eclient_phone,
         website: eclient_website,
-        version: 0.1
+        version: version_number
     }
 
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
@@ -25,6 +27,7 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
+    transaction.addTag('Version', eclient.version);
  
     await arweave.transactions.sign(transaction, jwk);
 
@@ -57,10 +60,14 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
     }
 }
 
-export async function updateEverClient(eclient_name, eclient_contact_name, eclient_address, eclient_postcode, eclient_email, eclient_phone, eclient_website, version_number) {
-    console.log(eclient_name + " " + eclient_contact_name + " " + eclient_address + " " + eclient_postcode + " " + eclient_email + " " + eclient_phone + " " + eclient_website, version_number);
+export async function updateEverClient(eclient_name, eclient_contact_name, eclient_address, eclient_postcode, eclient_email, eclient_phone, eclient_website, version_number, origin) {
+    console.log(eclient_name + " " + eclient_contact_name + " " + eclient_address + " " + eclient_postcode + " " + eclient_email + " " + eclient_phone + " " + eclient_website + " " + version_number + " " + origin);
 
-    var new_version_number = version_number + 0.1
+    if(version_number == null || version_number == undefined) {
+        var new_version_number = 2
+    } else {
+        var new_version_number = version_number + 1 
+    }
 
     var updated_eclient = {
         name: eclient_name,
@@ -81,15 +88,40 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
+    transaction.addTag('Version', updated_eclient.version);
+    transaction.addTag('Origin', {origin});
 
-    await arweave.transactions.sign(transaction, jwk);    
+    //await arweave.transactions.sign(transaction, jwk);    
     
-    const response = await arweave.transactions.post(transaction);
+    var localupdatedclient = {
+        name: eclient_name,
+        contact_name: eclient_contact_name,
+        address: eclient_address,
+        postcode: eclient_postcode,
+        email: eclient_email,
+        phone: eclient_phone,
+        website: eclient_website,
+        version: version_number,
+        new_version: new_version_number,
+        origin: origin,
+    }
+
+    const clients = JSON.parse(localStorage.getItem('evoice_new_clients'))
+
+    const type = typeof clients;
+    if(type == "object") {
+        var clients_list = [clients, localupdatedclient]
+        localStorage.setItem('evoice_new_clients', JSON.stringify(clients_list))
+    } else {
+        localStorage.setItem('evoice_new_clients', JSON.stringify(localupdatedclient))
+    }
+
+    /*const response = await arweave.transactions.post(transaction);
     console.log(response.status);
 
     if(response.status == 200) {
         toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
-    }
+    }*/
 }
 
 export async function getEverClientsGQL() { 

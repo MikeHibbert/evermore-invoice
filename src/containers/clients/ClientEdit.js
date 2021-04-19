@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import arweave from 'arweave';
+import React, { Component, version } from 'react';
+import arweave from '../../arweave-config';
 import indexOf from 'index-of-x';
 import { toast } from 'react-toastify';
 import { isValid } from 'postcode';
@@ -9,14 +9,15 @@ import { updateEverClient } from './helpers';
 
 export default class ClientEdit extends Component {
     state = {
-        clients: [],
         name: "",
         contact_name: "",
         address: "",
         postcode: "",
         email: "",
         phone: "",
-        website: ""
+        website: "",
+        txid: null,
+        version: null,
     }
 
     constructor(props) {
@@ -28,12 +29,14 @@ export default class ClientEdit extends Component {
     }
 
     selectedClient() {
-        this.setState({ clients: this.props.clients })
         const web_sections = this.props.location.pathname.split("/")
-        const txid = web_sections[4]
-        const selected_client = indexOf(this.state.clients, txid, 0, 'SameValue')
-        console.log(selected_client)
-        this.setState(this.state.clients[selected_client]);
+        const txid = web_sections[web_sections.length-1]
+        const that = this;
+        arweave.api.get(txid).then(response => {
+            that.setState(response.data)
+        });
+
+        this.setState({ txid: txid, version: version})
     }
 
     handleChange(e) {
@@ -81,7 +84,7 @@ export default class ClientEdit extends Component {
         e.preventDefault();
         
         if(this.validateNewClient() == true) {
-            updateEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website);
+            updateEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website, this.state.version, this.state.txid);
             this.props.history.push('/clients')
         } else {
             toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
@@ -144,7 +147,7 @@ export default class ClientEdit extends Component {
                                                     <div className="form-group row gutters">
                                                         <label htmlFor="postcode" className="col-sm-3 col-form-label text-right">Postcode/Zipcode</label>
                                                         <div className="col-sm-9">
-                                                            <input type="postcode" value={this.state.website} onChange={(e) => {this.handleChange(e)}} name="postcode" className="form-control" id="postcode" placeholder="Mobile" />
+                                                            <input type="postcode" value={this.state.postcode} onChange={(e) => {this.handleChange(e)}} name="postcode" className="form-control" id="postcode" placeholder="Mobile" />
                                                         </div>
                                                     </div>
                                                     
