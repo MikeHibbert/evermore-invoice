@@ -340,6 +340,7 @@ export async function saveEverVoice(client_id, evoice_tsheets, evoice_created, e
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Invoice');
+    transaction.addTag('Origin', transaction.id)
 
     await arweave.transactions.sign(transaction, jwk);
 

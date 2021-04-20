@@ -16,7 +16,7 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
         email: eclient_email,
         phone: eclient_phone,
         website: eclient_website,
-        version: version_number
+        vernumber: version_number
     }
 
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
@@ -27,7 +27,8 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
-    transaction.addTag('Version', eclient.version);
+    transaction.addTag('Version', eclient.vernumber);
+    transaction.addTag('Origin', transaction.id);
  
     await arweave.transactions.sign(transaction, jwk);
 
@@ -63,11 +64,8 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
 export async function updateEverClient(eclient_name, eclient_contact_name, eclient_address, eclient_postcode, eclient_email, eclient_phone, eclient_website, version_number, origin) {
     console.log(eclient_name + " " + eclient_contact_name + " " + eclient_address + " " + eclient_postcode + " " + eclient_email + " " + eclient_phone + " " + eclient_website + " " + version_number + " " + origin);
 
-    if(version_number == null || version_number == undefined) {
-        var new_version_number = 2
-    } else {
-        var new_version_number = version_number + 1 
-    }
+
+    var new_version_number = version_number + 1 
 
     var updated_eclient = {
         name: eclient_name,
@@ -77,8 +75,11 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
         email: eclient_email,
         phone: eclient_phone,
         website: eclient_website,
-        version: new_version_number
+        vernumber: new_version_number,
+        Origin: origin
     }
+
+    console.log(updated_eclient)
 
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
 
@@ -88,10 +89,10 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
-    transaction.addTag('Version', updated_eclient.version);
-    transaction.addTag('Origin', {origin});
+    transaction.addTag('Version', updated_eclient.vernumber);
+    transaction.addTag('Origin', updated_eclient.Origin);
 
-    //await arweave.transactions.sign(transaction, jwk);    
+    await arweave.transactions.sign(transaction, jwk);    
     
     var localupdatedclient = {
         name: eclient_name,
@@ -116,12 +117,15 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
         localStorage.setItem('evoice_new_clients', JSON.stringify(localupdatedclient))
     }
 
-    /*const response = await arweave.transactions.post(transaction);
+    //toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });
+    //console.log(localupdatedclient)
+
+    const response = await arweave.transactions.post(transaction);
     console.log(response.status);
 
     if(response.status == 200) {
         toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
-    }*/
+    }
 }
 
 export async function getEverClientsGQL() { 

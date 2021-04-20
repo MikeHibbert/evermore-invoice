@@ -20,6 +20,7 @@ export async function saveEverFAQs(question, answer) {
 
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-FAQ');
+    transaction.addTag('Origin', transaction.id)
  
     await arweave.transactions.sign(transaction, jwk);
 

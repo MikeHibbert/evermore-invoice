@@ -17,7 +17,8 @@ export default class ClientEdit extends Component {
         phone: "",
         website: "",
         txid: null,
-        version: null,
+        vernumber: null,
+        Origin: null,
     }
 
     constructor(props) {
@@ -34,9 +35,18 @@ export default class ClientEdit extends Component {
         const that = this;
         arweave.api.get(txid).then(response => {
             that.setState(response.data)
+            if(response.data.vernumber >= 2) {
+                this.setState({ Origin: response.data.Origin})
+            } else {
+                this.setState({ Origin: txid })
+            }
+            if(response.data.hasOwnProperty('vernumber') == false) {
+                this.setState({ vernumber: 1 })
+            }
         });
 
-        this.setState({ txid: txid, version: version})
+
+        this.setState({ txid: txid })
     }
 
     handleChange(e) {
@@ -84,7 +94,7 @@ export default class ClientEdit extends Component {
         e.preventDefault();
         
         if(this.validateNewClient() == true) {
-            updateEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website, this.state.version, this.state.txid);
+            updateEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website, this.state.vernumber, this.state.Origin);
             this.props.history.push('/clients')
         } else {
             toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
