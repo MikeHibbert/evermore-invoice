@@ -341,51 +341,7 @@ async function getOriginRecords() {
     }
 }
 
-async function getAllInOriginGroup(origin) {
-    const query = `{
-            transactions(
-                sort: HEIGHT_ASC
-                tags: [
-                {
-                    name: "App-Name",
-                    values: ["OriginTest"]
-                },
-                {
-                    name: "origin",
-                    values: ["${origin}"]
-                }
-                ]
-                after: ""
-                ) {
-                pageInfo {
-                    hasNextPage
-                }
-                edges {
-                    cursor
-                    node {
-                        id
-                        tags {
-                            name
-                            value
-                        }
-                    }
-                }
-        
-            }
-        }`;
-
-    const response = await axios.post("https://arweave.net/graphql", {
-        operationName: null,
-        query: query,
-        variables: {}
-    });
-
-    if(response.status == 200) {
-        return response.data.data.transactions.edges;
-    }
-}
-
-async function main() {
+/*async function main() {
 
     const origin_edges = await getOriginRecords();
 
@@ -426,6 +382,6 @@ async function main() {
     // await UpdateRecord(previousTX);
 
     console.log(origin_edges)
-}
+}*/
 
-main();
+//main();

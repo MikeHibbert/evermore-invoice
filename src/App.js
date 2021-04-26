@@ -20,6 +20,8 @@ import Reports from './containers/reports/Reports';
 import { getClients, getFaqs, getInvoices } from './helpers';
 import ClientNew from './containers/clients/ClientNew';
 import Faqs from './containers/faq/Faqs Page';
+import ClientOriginList from './containers/clients/ClientOriginList';
+//import InvoiceOriginList from './containers/invoices/InvoiceOriginList';
 
 
 class App extends Component {
@@ -229,6 +231,13 @@ class App extends Component {
         clients={this.state.clients}
         jwk={this.state.jwk} 
       />} />,
+      /*<Route key='invoice-history' exact path="/invoice/history/:txid" exact render={props => <InvoiceOriginList
+        {...props}
+        wallet_address={this.state.wallet_address}
+        
+        jwk={this.state.jwk}
+        currency_symbol={this.state.currency_symbol}
+      />} />,*/
       <Route key='clients' path="/clients" exact component={() => <Clients 
         clients={this.state.clients}
         wallet_address={this.state.wallet_address} 
@@ -249,6 +258,13 @@ class App extends Component {
         wallet_address={this.state.wallet_address} 
         
         jwk={this.state.jwk} 
+        currency_symbol={this.state.currency_symbol}
+      />} />,
+      <Route key='client-history' exact path="/client/history/:txid" exact render={props => <ClientOriginList
+        {...props}
+        wallet_address={this.state.wallet_address}
+        
+        jwk={this.state.jwk}
         currency_symbol={this.state.currency_symbol}
       />} />,
       <Route key='reports' path="/reports" exact component={() => <Reports 

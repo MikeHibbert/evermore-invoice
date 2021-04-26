@@ -1,4 +1,3 @@
-
 import sendgrid from '@sendgrid/mail';
 import arweave from './arweave-config';
 import settings from './app-config';
@@ -6,6 +5,8 @@ import {toast} from 'react-toastify';
 import { getEverVoicesGQL, getTimelordClientsGQL } from './containers/invoices/helpers';
 import { getEverClientsGQL } from './containers/clients/helpers';
 import { getEverFAQGQL } from './containers/faq/helpers';
+
+const axios = require('axios')
 
 const successMessage = (message) => {
   toast(message, { type: toast.TYPE.SUCCESS }); 
@@ -150,6 +151,74 @@ export const getLogos = async () => {
   }));
 
   return logos;
+}
+
+export async function getAllInOriginGroup(origin, type) {
+
+  let cursor = '';
+  let hasNextPage = true;
+  const objects = [];
+
+  const query = `{
+          transactions(
+              sort: HEIGHT_ASC
+              tags: [
+              {
+                  name: "Type",
+                  values: ["${type}"]
+              },
+              {
+                  name: "Origin",
+                  values: ["${origin}"]
+              }
+              ]
+              after: "${cursor}"
+              ) {
+              pageInfo {
+                  hasNextPage
+              }
+              edges {
+                  cursor
+                  node {
+                      id
+                      tags {
+                          name
+                          value
+                      }
+                  }
+              }
+      
+          }
+      }`;
+
+  const response = await axios.post("https://arweave.net/graphql", {
+      operationName: null,
+      query: query,
+      variables: {}
+  });
+
+  if(response.status == 200) {
+
+      const data = response.data.data;
+
+          for(let i in data.transactions.edges) {
+              const item = data.transactions.edges[i].node;
+
+              const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
+              item['origin_data'] = JSON.parse(result);  
+              objects.push(item)             
+          }
+
+          hasNextPage = data.transactions.pageInfo.hasNextPage;
+
+          if(hasNextPage) {
+              cursor = data.transactions.edges[data.transactions.edges.length - 1].cursor;
+          }
+      } else {
+          hasNextPage = false;
+      }
+
+  return objects;
 }
 
 export const getUserInfo = () => {
