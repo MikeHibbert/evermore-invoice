@@ -4,7 +4,7 @@ import arweave from '../../arweave-config';
 import { Link } from 'react-router-dom';
 import OtherClient from './OtherClient'
 import Pagination from "react-js-pagination";
-import { getAllInOriginGroup } from '../../helpers'
+import { selectedObjects } from '../../helpers'
 
 
 export default class ClientOriginList extends Component {
@@ -26,63 +26,41 @@ export default class ClientOriginList extends Component {
     }
 
     componentDidMount() {
-      this.selectedObjects()
+      const clients = this.getPaginatedClients(0, 9);
+
+      this.setState({clients: clients, active_page: 1})
     }
 
-    selectedObjects() {
-        const that = this;
-        const web_sections = this.props.location.pathname.split("/")
-        const txid = web_sections[web_sections.length-1]
-        const type = web_sections[web_sections.length-3]
-        
-        arweave.api.get(txid).then(response => {
-          that.setState(response.data)
-          if(response.data.vernumber >= 2) {
-              this.setState({ Origin: response.data.Origin})
-          } else {
-              this.setState({ Origin: txid })
-          }
-        });
-        
-        if(type == "invoice") {
-            getAllInOriginGroup(this.state.Origin, "EverVoice-Invoice")
-        } else if(type == "client") {
-            getAllInOriginGroup(this.state.Origin, "EverVoice-Client") 
-            this.setState({ clients: getAllInOriginGroup().response })
-        }
-        
-        
-
-
-        this.setState({ txid: txid })
-    }
+    
 
     _handlePageChange(active_page) {
       const start = (active_page - 1) * 10;
       const end = start + 9;
 
-      const clients = this.getPaginatedClients(start, end);
+      const clients = this.getPaginatedClients(start, end)
 
-      this.setState({clients: clients, active_page: active_page})
+      this.setState({ clients: clients, active_page: active_page })
     }
 
-    getPaginatedClients(start, end) {
+    async getPaginatedClients(start, end) {
+      const web_sections = this.props.location.pathname.split("/")
+      const txid = web_sections[web_sections.length-1]
+      const type = web_sections[web_sections.length-3]
       
       var clients = [];
-      getAllInOriginGroup(this.state.Origin, )
       for(let i=start; i <= end; i++) {
-        clients.push(this.state.clients[i]);
+        clients.push(this.selectedObjects(type, txid));
       }
       
       return clients;
     }
 
     render() {
-
+      
         const list = this.state.clients.map((c) => {
-          return <OtherClient client={c} />;
+          return <OtherClient key={c} client={c} />
         });
-
+      
         return(
             <>
               <header className="page-header">

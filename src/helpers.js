@@ -201,24 +201,45 @@ export async function getAllInOriginGroup(origin, type) {
 
       const data = response.data.data;
 
-          for(let i in data.transactions.edges) {
-              const item = data.transactions.edges[i].node;
 
-              const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
-              item['origin_data'] = JSON.parse(result);  
-              objects.push(item)             
-          }
 
-          hasNextPage = data.transactions.pageInfo.hasNextPage;
+      for(let i in data.transactions.edges) {
+          const item = data.transactions.edges[i].node;
 
-          if(hasNextPage) {
-              cursor = data.transactions.edges[data.transactions.edges.length - 1].cursor;
-          }
-      } else {
-          hasNextPage = false;
+          const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
+          item['origin_data'] = JSON.parse(result);  
+          objects.push(item)             
       }
 
+      hasNextPage = data.transactions.pageInfo.hasNextPage;
+
+      if(hasNextPage) {
+          cursor = data.transactions.edges[data.transactions.edges.length - 1].cursor;
+      }
+  } else {
+      hasNextPage = false;
+  }
+
   return objects;
+}
+
+export async function selectedObjects(type, txid) {
+  const that = this;
+  
+  /*arweave.api.get(txid).then(response => {
+    that.setState(response.data)
+    if(response.data.vernumber >= 2) {
+        this.setState({ Origin: response.data.Origin})
+    } else {
+        this.setState({ Origin: txid })
+    }
+  });*/
+  
+  if(type == "invoice") {
+      await getAllInOriginGroup(txid, "EverVoice-Invoice")
+  } else if(type == "client") {
+      await getAllInOriginGroup(txid, "EverVoice-Client")
+  }
 }
 
 export const getUserInfo = () => {
