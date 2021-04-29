@@ -16,7 +16,6 @@ export default class ClientEdit extends Component {
         email: "",
         phone: "",
         website: "",
-        txid: null,
         vernumber: null,
         Origin: null,
     }
@@ -35,18 +34,7 @@ export default class ClientEdit extends Component {
         const that = this;
         arweave.api.get(txid).then(response => {
             that.setState(response.data)
-            if(response.data.vernumber >= 2) {
-                this.setState({ Origin: response.data.Origin})
-            } else {
-                this.setState({ Origin: txid })
-            }
-            if(response.data.hasOwnProperty('vernumber') == false) {
-                this.setState({ vernumber: 1 })
-            }
         });
-
-
-        this.setState({ txid: txid })
     }
 
     handleChange(e) {

@@ -43,24 +43,30 @@ export default class ClientOriginList extends Component {
     }
 
     async getPaginatedClients(start, end) {
+      debugger;
       const web_sections = this.props.location.pathname.split("/")
       const txid = web_sections[web_sections.length-1]
       const type = web_sections[web_sections.length-3]
       
       var clients = [];
+      var objects = await selectedObjects(type, txid)
       for(let i=start; i <= end; i++) {
-        clients.push(this.selectedObjects(type, txid));
+        clients.push(objects);
       }
       
       return clients;
     }
 
     render() {
-      
+      if(this.state.ready == "true") {
         const list = this.state.clients.map((c) => {
-          return <OtherClient key={c} client={c} />
+          return <OtherClient key={c.id} client={c} />
         });
-      
+        return list;
+      } else {
+        console.log("not ready yet! :P")
+      }
+
         return(
             <>
               <header className="page-header">

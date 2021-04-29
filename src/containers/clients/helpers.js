@@ -19,7 +19,8 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
         email: eclient_email,
         phone: eclient_phone,
         website: eclient_website,
-        vernumber: version_number
+        vernumber: version_number,
+        Origin: origin
     }
 
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
@@ -31,7 +32,7 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
     transaction.addTag('App', settings.APP_NAME);
     transaction.addTag('Type', 'EverVoice-Client');
     transaction.addTag('Version', eclient.vernumber);
-    transaction.addTag('Origin', transaction.id);
+    transaction.addTag('Origin', eclient.Origin);
  
     await arweave.transactions.sign(transaction, jwk);
 
@@ -120,14 +121,11 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
         localStorage.setItem('evoice_new_clients', JSON.stringify(localupdatedclient))
     }
 
-    //toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });
-    //console.log(localupdatedclient)
-
     const response = await arweave.transactions.post(transaction);
     console.log(response.status);
 
     if(response.status == 200) {
-        toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
+        toast("Your Client has been updated and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
     }
 }
 

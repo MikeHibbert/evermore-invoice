@@ -226,19 +226,10 @@ export async function getAllInOriginGroup(origin, type) {
 export async function selectedObjects(type, txid) {
   const that = this;
   
-  /*arweave.api.get(txid).then(response => {
-    that.setState(response.data)
-    if(response.data.vernumber >= 2) {
-        this.setState({ Origin: response.data.Origin})
-    } else {
-        this.setState({ Origin: txid })
-    }
-  });*/
-  
   if(type == "invoice") {
-      await getAllInOriginGroup(txid, "EverVoice-Invoice")
+      return await getAllInOriginGroup(txid, "EverVoice-Invoice").response;
   } else if(type == "client") {
-      await getAllInOriginGroup(txid, "EverVoice-Client")
+      return await getAllInOriginGroup(txid, "EverVoice-Client").response;
   }
 }
 
