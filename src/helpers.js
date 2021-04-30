@@ -207,7 +207,7 @@ export async function getAllInOriginGroup(origin, type) {
           const item = data.transactions.edges[i].node;
 
           const result = await arweave.transactions.getData(item.id , {decode: true, string: true});
-          item['origin_data'] = JSON.parse(result);  
+          item['object_data'] = JSON.parse(result);  
           objects.push(item)             
       }
 
@@ -224,12 +224,11 @@ export async function getAllInOriginGroup(origin, type) {
 }
 
 export async function selectedObjects(type, txid) {
-  const that = this;
-  
+
   if(type == "invoice") {
-      return await getAllInOriginGroup(txid, "EverVoice-Invoice").response;
+      return await getAllInOriginGroup(txid, "EverVoice-Invoice");
   } else if(type == "client") {
-      return await getAllInOriginGroup(txid, "EverVoice-Client").response;
+      return await getAllInOriginGroup(txid, "EverVoice-Client");
   }
 }
 

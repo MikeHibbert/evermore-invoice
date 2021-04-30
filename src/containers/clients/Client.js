@@ -7,7 +7,7 @@ const Client = function(props) {
     let last_invoice_date = "N/A";
 
     const edit = "/client/edit/" + props.client.id;
-    const origins = "/client/history/" + props.client.id;
+    const origins = "/client/history/" + props.client.client_data.Origin;
     return(
         <tr>
             <td>{props.client.client_data.name}</td>

@@ -61,7 +61,6 @@ export default class ClientNew extends Component {
         e.preventDefault();
         if(this.validateNewClient() == true) {
             saveEverClient(this.state.name, this.state.contact_name, this.state.address, this.state.postcode, this.state.email, this.state.phone, this.state.website);
-            this.props.history.push('/clients')
         } else {
             toast("Please Make Sure All Required Data Is Present Before Submission!", { type: toast.TYPE.ERROR });
         }
@@ -69,24 +68,11 @@ export default class ClientNew extends Component {
 
     render() {
         return(
-            <>
-            <header className="page-header">
-                <div className="container-fluid">
-                <div className="row">
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="page-title">
-                        <h3>&nbsp;</h3>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </header>
             <div className="main-content">
                 <div className="row gutters">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="card">
                             <div className="card-body">
-                                <button className="form-control" style={{alignContent: "left", width: 200, marginBottom: 20}} onClick={() => { this.props.history.push('/clients') }}>Back to Client List</button>
                                 <div className="row justify-content-center gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-10 col-sm-12">
                                         <form>
@@ -164,7 +150,6 @@ export default class ClientNew extends Component {
                     </div>
                 </div>
             </div>
-            </>
         );
     }
 }

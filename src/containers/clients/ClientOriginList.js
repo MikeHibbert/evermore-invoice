@@ -14,8 +14,10 @@ export default class ClientOriginList extends Component {
         number_of_clients: 0,
         active_page: 1,
         clients: [],
+        tempStorage: [],
         Origin: null,
-
+        type: null,
+        ready: false,
     }
 
     constructor(props) {
@@ -25,10 +27,10 @@ export default class ClientOriginList extends Component {
       this.getPaginatedClients.bind(this);
     }
 
-    componentDidMount() {
-      const clients = this.getPaginatedClients(0, 9);
+    async componentDidMount() {
+      const clients = await this.getPaginatedClients(0, 9);
 
-      this.setState({clients: clients, active_page: 1})
+      this.setState({clients: clients, active_page: 1, ready: true})
     }
 
     
@@ -43,26 +45,37 @@ export default class ClientOriginList extends Component {
     }
 
     async getPaginatedClients(start, end) {
-      debugger;
-      const web_sections = this.props.location.pathname.split("/")
-      const txid = web_sections[web_sections.length-1]
-      const type = web_sections[web_sections.length-3]
+      const that = this
+      const txid = this.props.selectedTxid
+      
+      
+      arweave.api.get(txid).then(response => {
+        that.setState({ Origin: response.data.Origin, type: response.data.type})
+        if(response.data.vernumber >= 2) {
+            this.setState({ Origin: response.data.Origin})
+        } else {
+            this.setState({ Origin: txid })
+        }
+      });
       
       var clients = [];
-      var objects = await selectedObjects(type, txid)
+      var objects = await selectedObjects(this.state.type, txid)
+
+      if(objects.length < end) end = objects.length - 1;
       for(let i=start; i <= end; i++) {
-        clients.push(objects);
+        clients.push(objects[i]);
       }
+      
       
       return clients;
     }
 
     render() {
-      if(this.state.ready == "true") {
-        const list = this.state.clients.map((c) => {
+      let list = null;
+      if(this.state.ready == true) {
+        list = this.state.clients.map((c) => {
           return <OtherClient key={c.id} client={c} />
         });
-        return list;
       } else {
         console.log("not ready yet! :P")
       }
@@ -97,7 +110,6 @@ export default class ClientOriginList extends Component {
                     <div className="card">
                       <div className="card-header">Clients</div>
                         <div className="card-body">
-                        <button className="form-control" style={{alignContent: "left", width: 200, marginBottom: 20}} onClick={() => { this.props.history.push('/clients') }}>Back to Client List</button>
                           <div className="table-responsive" style={{height: '100%', minHeight: '600px'}}>
                             <table className="table m-0">
                               <thead>

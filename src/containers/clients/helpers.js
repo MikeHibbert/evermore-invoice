@@ -20,7 +20,8 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
         phone: eclient_phone,
         website: eclient_website,
         vernumber: version_number,
-        Origin: origin
+        Origin: origin,
+        type: "client",
     }
 
     const jwk = JSON.parse(sessionStorage.getItem('AR_jwk', null));
@@ -58,7 +59,6 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
     
     
     const response = await arweave.transactions.post(transaction);
-    console.log(response.status);
 
     if(response.status == 200) {
         toast("Your Client has been saved and will be mined shortly!", { type: toast.TYPE.SUCCESS });  
@@ -122,7 +122,6 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
     }
 
     const response = await arweave.transactions.post(transaction);
-    console.log(response.status);
 
     if(response.status == 200) {
         toast("Your Client has been updated and will be mined shortly!", { type: toast.TYPE.SUCCESS });  

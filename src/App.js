@@ -13,7 +13,7 @@ import Dashboard from './containers/dashboard/Dashboard';
 import Invoices from './containers/invoices/Invoices';
 import InvoiceEdit from './containers/invoices/InvoiceEdit';
 import InvoiceNew from './containers/invoices/InvoiceNew';
-import Clients from './containers/clients/Clients';
+import ClientPage from './containers/clients/ClientPage';
 import ClientEdit from './containers/clients/ClientEdit';
 import Settings from './containers/settings/Settings';
 import Reports from './containers/reports/Reports';
@@ -238,7 +238,7 @@ class App extends Component {
         jwk={this.state.jwk}
         currency_symbol={this.state.currency_symbol}
       />} />,*/
-      <Route key='clients' path="/clients" exact component={() => <Clients 
+      <Route key='clients' path="/clients" exact component={() => <ClientPage 
         clients={this.state.clients}
         wallet_address={this.state.wallet_address} 
         jwk={this.state.jwk} 
