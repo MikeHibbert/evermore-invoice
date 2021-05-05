@@ -77,11 +77,16 @@ export default class ClientPage extends Component {
                     </a>
                     </div>
                 </header>
-                <div>
-                    <Clients style={clientstyle} clients={this.props.clients} wallet_address={this.props.wallet_address} jwk={this.props.jwk} currency_symbol={this.props.currency_symbol}/>
-                    <ClientNew style={newclientstyle} clients={this.props.clients} wallet_address={this.props.wallet_address} jwk={this.props.jwk} currency_symbol={this.props.currency_symbol}/>
-                    <ClientEdit style={editclientstyle} selectedTxid={this.state.selectedTxid} clients={this.props.clients} wallet_address={this.props.wallet_address} jwk={this.props.jwk} currency_symbol={this.props.currency_symbol}/>
-                    
+                <div className="main-content">
+                    <div style={clientstyle}>
+                        <Clients clients={this.props.clients} wallet_address={this.props.wallet_address} jwk={this.props.jwk} currency_symbol={this.props.currency_symbol}/>        
+                    </div>
+                    <div style={newclientstyle}>
+                        <ClientNew clients={this.props.clients} wallet_address={this.props.wallet_address} jwk={this.props.jwk} currency_symbol={this.props.currency_symbol}/>
+                    </div>
+                    <div style={editclientstyle}>
+                        <ClientEdit selectedTxid={this.state.selectedTxid} clients={this.props.clients} wallet_address={this.props.wallet_address} jwk={this.props.jwk} currency_symbol={this.props.currency_symbol}/>
+                    </div>
                 </div>
             </>
         );
