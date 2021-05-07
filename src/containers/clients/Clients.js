@@ -21,7 +21,7 @@ class Clients extends Component {
   componentDidMount() {
     const clients = this.getPaginatedClients(0, this.props.clients.length - 1);
 
-    this.setState({clients: clients, active_page: 1})
+    this.setState({clients: clients, active_page: 1, number_of_clients: this.props.clients.length})
   }
 
   _handlePageChange(active_page) {
@@ -42,8 +42,6 @@ class Clients extends Component {
     
     return clients;
   }
-
-
 
   render() {
 

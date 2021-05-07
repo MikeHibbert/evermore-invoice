@@ -244,14 +244,6 @@ class App extends Component {
         jwk={this.state.jwk} 
         currency_symbol={this.state.currency_symbol}
       />} />,
-      <Route key='client-new' exact path="/client/new" exact render={props => <ClientNew
-        {...props}
-        clients={this.state.clients}
-        wallet_address={this.state.wallet_address} 
-        
-        jwk={this.state.jwk} 
-        currency_symbol={this.state.currency_symbol}
-      />} />,
       <Route key='client-edit' exact path="/client/edit/:txid" exact render={props => <ClientEdit 
         {...props}
         clients={this.state.clients}

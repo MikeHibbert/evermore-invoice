@@ -1,39 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import arweave from '../../arweave-config';
 import settings from '../../app-config';
 import {toast} from 'react-toastify';
-import { uuid as v4 } from 'uuidv4'
+import { uuid as v4 } from 'uuidv4';
+import { getAllInOriginGroup } from '../../helpers';
 
 const axios = require('axios')
-
-export class PageSelector extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        debugger;
-        let value = this.props.value;
-        let txid = this.props.txid;
-        if(value == "clients") {
-            let result = {selected: 1}
-            return result;
-        }
-        if(value == "newclient") {
-            let result = {selected: 2}
-            return result;
-        }
-        if(value == "editclient") {
-            let result = {selected: 3, selectedTxid: txid}
-            return result;
-        }
-        if(value == "clientoriginlist") {
-            let result = {selected: 4, selectedTxid: txid}
-            return result;
-        }
-    }
-}
 
 export async function saveEverClient(eclient_name, eclient_contact_name, eclient_address, eclient_postcode, eclient_email, eclient_phone, eclient_website) {
     console.log(eclient_name + " " + eclient_contact_name + " " + eclient_address + " " + eclient_postcode + " " + eclient_email + " " + eclient_phone + " " + eclient_website);
@@ -368,7 +340,7 @@ async function getOriginRecords() {
     }
 }
 
-/*async function main() {
+export async function VersionChecker() {
 
     const origin_edges = await getOriginRecords();
 
@@ -406,9 +378,7 @@ async function getOriginRecords() {
 
     const previousTX = origin_edges[origin_edges.length - 1].node;
 
-    // await UpdateRecord(previousTX);
+    await UpdateRecord(previousTX);
 
     console.log(origin_edges)
-}*/
-
-//main();
+}

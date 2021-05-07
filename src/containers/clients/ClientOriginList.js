@@ -46,20 +46,12 @@ export default class ClientOriginList extends Component {
 
     async getPaginatedClients(start, end) {
       const that = this
-      const txid = this.props.selectedTxid
-      
-      
-      arweave.api.get(txid).then(response => {
-        that.setState({ Origin: response.data.Origin, type: response.data.type})
-        if(response.data.vernumber >= 2) {
-            this.setState({ Origin: response.data.Origin})
-        } else {
-            this.setState({ Origin: txid })
-        }
-      });
+      const web_sections = this.props.location.pathname.split("/")
+      const txid = web_sections[web_sections.length-1]
+      const type = web_sections[web_sections.length-3]
       
       var clients = [];
-      var objects = await selectedObjects(this.state.type, txid)
+      var objects = await selectedObjects(type, txid)
 
       if(objects.length < end) end = objects.length - 1;
       for(let i=start; i <= end; i++) {
@@ -105,6 +97,7 @@ export default class ClientOriginList extends Component {
               </header>
 
               <div className="main-content">
+                <button className="form-control" style={{alignContent: "left", width: 200, marginBottom: 20}} onClick={() => { this.props.history.push('/clients') }}>Back to Client List</button>
                 <div className="row gutters">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="card">
