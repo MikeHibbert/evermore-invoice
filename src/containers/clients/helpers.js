@@ -33,7 +33,7 @@ export async function saveEverClient(eclient_name, eclient_contact_name, eclient
     }, jwk);
 
     transaction.addTag('App', settings.APP_NAME);
-    transaction.addTag('Type', 'EverVoice-Client');
+    transaction.addTag('Type', 'EverClient');
     transaction.addTag('Version', eclient.vernumber);
     transaction.addTag('Origin', eclient.Origin);
  
@@ -94,7 +94,7 @@ export async function updateEverClient(eclient_name, eclient_contact_name, eclie
     }, jwk);
 
     transaction.addTag('App', settings.APP_NAME);
-    transaction.addTag('Type', 'EverVoice-Client');
+    transaction.addTag('Type', 'EverClient');
     transaction.addTag('Version', updated_eclient.vernumber);
     transaction.addTag('Origin', updated_eclient.Origin);
 
@@ -145,7 +145,7 @@ export async function XXXgetEverClientsGQL() {
                 tags: [
                 {
                     name: "Type",
-                    values: ["EverVoice-Client"]
+                    values: ["EverClient"]
                 },
                 ]
                 after: "${cursor}"
@@ -219,7 +219,7 @@ export async function getEverClientsGQL() {
                 tags: [
                 {
                     name: "Type",
-                    values: ["EverVoice-Client"]
+                    values: ["EverClient"]
                 },
                 ]
                 after: "${cursor}"
@@ -278,24 +278,6 @@ export async function getEverClientsGQL() {
     return clients;
 }
 
-async function UpdateRecord(previousTX) {
-    const originTag = previousTX.tags.filter(tag => tag.name == 'Origin')[0];
-    const versionTag = previousTX.tags.filter(tag => tag.name == 'Version')[0];
-
-    const transaction = await arweave.createTransaction({data: "Hello WOrld"});
-
-    const version_number = parseInt(versionTag.value) + 1;
-
-    transaction.addTag('App', "OriginTest");
-    transaction.addTag('Version', version_number);
-    transaction.addTag('Origin', originTag.value);
-
-    await arweave.transactions.sign(transaction);
-    const response = await arweave.transactions.post(transaction);
-
-    console.log(originTag.value);
-}
-
 async function getOriginRecords() {
     const query = `{
             transactions(
@@ -303,7 +285,7 @@ async function getOriginRecords() {
                 tags: [
                 {
                     name: "Type",
-                    values: ["EverVoice-Client"]
+                    values: ["EverClient"]
                 },
                 {
                     name: "Version",
@@ -344,7 +326,7 @@ export async function VersionChecker() {
 
     const origin_edges = await getOriginRecords();
 
-    const latest_versions = {};
+    let latest_versions = [];
     for(let i in origin_edges) {
         const node = origin_edges[i].node;
         const versionTag = node.tags.filter(tag => tag.name == 'Version')[0];
@@ -356,7 +338,7 @@ export async function VersionChecker() {
 
         latest_versions[originTag.value] = node;
 
-        const other_versions = await getAllInOriginGroup(originTag.value);
+        const other_versions = await getAllInOriginGroup("EverClient", originTag.value);
 
         for(let j in other_versions) {
             const other_version = other_versions[j].node;
@@ -369,16 +351,10 @@ export async function VersionChecker() {
             if(latest_versions[otherOriginTag.value].version_number < other_version_number) {
                 other_version['version_number'] = other_version_number;
                 latest_versions[otherOriginTag.value] = other_version;
+                latest_versions.push(latest_versions[otherOriginTag.value])
             }
         }
 
     }
-
-    console.log(latest_versions);
-
-    const previousTX = origin_edges[origin_edges.length - 1].node;
-
-    await UpdateRecord(previousTX);
-
-    console.log(origin_edges)
+    return latest_versions
 }

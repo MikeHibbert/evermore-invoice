@@ -228,7 +228,7 @@ export async function selectedObjects(type, txid) {
   if(type == "invoice") {
       return await getAllInOriginGroup(txid, "EverVoice-Invoice");
   } else if(type == "client") {
-      return await getAllInOriginGroup(txid, "EverVoice-Client");
+      return await getAllInOriginGroup(txid, "EverClient");
   }
 }
 

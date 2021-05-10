@@ -10,7 +10,6 @@ export default class ClientPage extends Component {
       clients_paid_balance: 0,
       clients_unpaid_balance: 0,
       selected: null,
-      selectedTxid: null,
     }
 
     constructor(props) {
