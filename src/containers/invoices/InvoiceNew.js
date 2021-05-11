@@ -42,7 +42,6 @@ export default class InvoiceNew extends Component {
         const unixcreated = creationdate.getTime();
         const unixduedate = moment(today2).unix()*1000
 
-        debugger;
         this.setState({ otherinfo: {duedate: today2, created: creationdate}, unixcreated: unixcreated, unixduedate: unixduedate, clientid: this.props.clients[0].id })
     }
     

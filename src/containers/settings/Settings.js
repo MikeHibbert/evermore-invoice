@@ -91,7 +91,6 @@ class Settings extends Component {
         const reader = new FileReader();
         reader.onload = function() {
             //const text = reader.result
-            debugger;
             const settings = JSON.parse(reader.result);
             
             console.log(settings)        

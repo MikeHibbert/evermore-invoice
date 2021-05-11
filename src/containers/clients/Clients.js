@@ -27,7 +27,6 @@ class Clients extends Component {
   }
 
   async _handlePageChange(active_page) {
-    debugger;
     const start = (active_page - 1) * 10;
     const end = start + 9;
 
@@ -48,7 +47,7 @@ class Clients extends Component {
     }
     
     this.setState({ready: true})
-    return filtered_clients;
+    return clients;
   }
 
   render() {
@@ -60,11 +59,6 @@ class Clients extends Component {
     } else {
       console.log("not ready yet! :P")
     }
-    
-      
-    
-
-    
 
     return(
       <div className="row gutters">
@@ -90,9 +84,9 @@ class Clients extends Component {
                   <Pagination
                     activePage={this.state.active_page}
                     itemsCountPerPage={10}
-                    totalItemsCount={this.props.clients.length}
-                    pageRangeDisplayed={Math.ceil(this.props.clients.length / this.itemsCountPerPage)}
-                    onChange={this._handlePageChange}
+                    totalItemsCount={100}
+                    pageRangeDisplayed={this.totalItemsCount / this.itemsCountPerPage}
+                    onChange={this.handlePageChange}
                     itemClass='page-item'
                     linkClass='page-link'
                     activeClass='active'

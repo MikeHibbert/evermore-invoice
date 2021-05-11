@@ -279,8 +279,10 @@ export async function getEverClientsGQL() {
 }
 
 async function getOriginRecords() {
+    const address = sessionStorage.getItem('AR_Wallet', null);
     const query = `{
             transactions(
+                owners: ["${address}"]
                 sort: HEIGHT_ASC
                 tags: [
                 {
@@ -323,7 +325,7 @@ async function getOriginRecords() {
 }
 
 export async function VersionChecker() {
-
+debugger;
     const origin_edges = await getOriginRecords();
 
     let latest_versions = [];
@@ -354,7 +356,6 @@ export async function VersionChecker() {
                 latest_versions.push(latest_versions[otherOriginTag.value])
             }
         }
-
     }
     return latest_versions
 }
