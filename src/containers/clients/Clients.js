@@ -30,30 +30,28 @@ class Clients extends Component {
     const start = (active_page - 1) * 10;
     const end = start + 9;
 
-    const clients = await this.getPaginatedClients(start, end);
+    const filtered_clients = await this.getPaginatedClients(start, end);
 
-    this.setState({clients: clients, active_page: active_page})
+    this.setState({filtered_clients: filtered_clients, active_page: active_page})
   }
 
   async getPaginatedClients(start, end) {
+    debugger;
     var clients = [];
     for(let i=start; i <= end; i++) {
       clients.push(this.props.clients[i]);
     }
 
-    var filtered_clients = [];
-    for(let i in clients) {
-      filtered_clients.push(await VersionChecker()[i])
-    }
+    var filtered_clients = await VersionChecker()
     
     this.setState({ready: true})
-    return clients;
+    return filtered_clients;
   }
 
   render() {
     let clients = null;
     if(this.state.ready == true) {
-      clients = this.props.clients.map((c) => {
+      clients = this.state.filtered_clients.map((c) => {
         return <Client key={c.id} client={c}/>
       });
     } else {

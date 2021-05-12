@@ -325,10 +325,10 @@ async function getOriginRecords() {
 }
 
 export async function VersionChecker() {
-debugger;
+
     const origin_edges = await getOriginRecords();
 
-    let latest_versions = [];
+    let latest_versions = {};
     for(let i in origin_edges) {
         const node = origin_edges[i].node;
         const versionTag = node.tags.filter(tag => tag.name == 'Version')[0];
@@ -340,10 +340,10 @@ debugger;
 
         latest_versions[originTag.value] = node;
 
-        const other_versions = await getAllInOriginGroup("EverClient", originTag.value);
+        const other_versions = await getAllInOriginGroup(originTag.value, "EverClient");
 
         for(let j in other_versions) {
-            const other_version = other_versions[j].node;
+            const other_version = other_versions[j];
 
             const otherVersionTag = other_version.tags.filter(tag => tag.name == 'Version')[0];
             const otherOriginTag = node.tags.filter(tag => tag.name == 'Origin')[0];
@@ -353,7 +353,6 @@ debugger;
             if(latest_versions[otherOriginTag.value].version_number < other_version_number) {
                 other_version['version_number'] = other_version_number;
                 latest_versions[otherOriginTag.value] = other_version;
-                latest_versions.push(latest_versions[otherOriginTag.value])
             }
         }
     }
